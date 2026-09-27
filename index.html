@@ -370,6 +370,186 @@
       cursor: pointer;
     }
 
+    /* Teacher appreciation: FAB, panel, confirm dialog */
+    .fab {
+      -webkit-appearance: none;
+      appearance: none;
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--on-gold, #030F22);
+      border: none;
+      font-weight: 800;
+      font-size: .9rem;
+      padding: 13px 18px;
+      border-radius: var(--pill);
+      box-shadow: 0 8px 24px -4px rgba(0,0,0,.4);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .fab .i { font-size: 1.2rem; }
+
+    .panel-overlay,
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(3, 15, 34, .55);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    @media (min-width: 640px) {
+      .panel-overlay, .confirm-overlay { align-items: center; padding: 20px; }
+    }
+
+    .panel {
+      background: var(--surface);
+      width: 100%;
+      max-width: 560px;
+      max-height: min(82vh, 720px);
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    @media (min-width: 640px) {
+      .panel { border-radius: var(--r); max-height: 78vh; }
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 8px;
+    }
+
+    .panel-head h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .icon-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .panel-search {
+      margin: 0 18px 12px;
+    }
+
+    .teacher-list {
+      list-style: none;
+      overflow-y: auto;
+      padding: 4px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .teacher-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--inset);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .tr-info {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tr-name {
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    .tr-role {
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .confirm-box {
+      background: var(--surface);
+      width: 100%;
+      max-width: 380px;
+      border-radius: 20px 20px 0 0;
+      padding: 22px 20px calc(20px + env(safe-area-inset-bottom));
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .confirm-box { border-radius: var(--r); }
+    }
+
+    #confirm-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .confirm-hint {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      border: none;
+      border-radius: var(--pill);
+      padding: 13px 16px;
+      font-weight: 800;
+      font-size: .95rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .confirm-cancel {
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .confirm-yes {
+      background: var(--gold);
+      color: var(--on-gold, #030F22);
+    }
+
     .picker label {
       display: block;
       font-size: .85rem;
@@ -528,13 +708,19 @@
 
     .teacher {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 12px;
+      gap: 10px 12px;
       background: var(--inset);
       border: 1px solid var(--line);
       border-left: 4px solid var(--gold);
       border-radius: 8px;
       padding: 12px
+    }
+
+    .teacher>div:not(.ava) {
+      flex: 1 1 140px;
+      min-width: 0;
     }
 
     .ava {
@@ -563,6 +749,48 @@
       font-size: .9rem;
       font-weight: 600;
       line-height: 1.25
+    }
+
+    .thanks-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      margin-left: auto;
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .85rem;
+      padding: 7px 12px;
+      border-radius: var(--pill);
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .thanks-btn .i { font-size: 1rem; }
+
+    .thanks-btn:active { transform: scale(.96); }
+
+    .thanks-btn.thanked {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--on-gold, #030F22);
+    }
+
+    .thanks-btn.thanked .i { fill: currentColor; }
+
+    .thanks-pop {
+      animation: thanks-pop .35s ease;
+    }
+
+    @keyframes thanks-pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.25); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
@@ -606,6 +834,13 @@
     <symbol id="i-search" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l6.24 6.19a1 1 0 0 0 1.52 0Z" />
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
     </symbol>
   </svg>
 
@@ -705,6 +940,39 @@
       </div>
     </article>
   </main>
+
+  <button type="button" class="fab" id="fab-teachers">
+    <svg class="i" aria-hidden="true"><use href="#i-heart" /></svg>
+    <span id="fab-teachers-label"></span>
+  </button>
+
+  <div class="panel-overlay" id="panel-overlay" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <div class="panel-head">
+        <h2 id="panel-title"></h2>
+        <button type="button" class="icon-btn" id="panel-close" aria-label="Close">
+          <svg class="i" aria-hidden="true"><use href="#i-x" /></svg>
+        </button>
+      </div>
+      <div class="search-row panel-search">
+        <svg class="i" aria-hidden="true"><use href="#i-search" /></svg>
+        <input type="search" id="teacher-search" autocomplete="off" inputmode="search">
+      </div>
+      <ul class="teacher-list" id="teacher-list"></ul>
+    </div>
+  </div>
+
+  <div class="confirm-overlay" id="confirm-overlay" hidden>
+    <div class="confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="confirm-text">
+      <p id="confirm-text"></p>
+      <p class="confirm-hint" id="confirm-hint"></p>
+      <div class="confirm-actions">
+        <button type="button" class="confirm-btn confirm-cancel" id="confirm-cancel"></button>
+        <button type="button" class="confirm-btn confirm-yes" id="confirm-yes"></button>
+      </div>
+    </div>
+  </div>
+
 
   <script>
     // UPDATED: School starts at 09:00, 45 minute lessons.
@@ -921,7 +1189,16 @@
       toDark: { ru: "Тёмная тема", kk: "Қараңғы тема", en: "Dark theme" },
       toLight: { ru: "Светлая тема", kk: "Жарық тема", en: "Light theme" },
       searchPlaceholder: { ru: "Поиск: предмет, учитель, кабинет...", kk: "Іздеу: пән, мұғалім, кабинет...", en: "Search subject, teacher, room..." },
-      noResults: { ru: "Ничего не найдено", kk: "Ештеңе табылмады", en: "No results found" }
+      noResults: { ru: "Ничего не найдено", kk: "Ештеңе табылмады", en: "No results found" },
+      fabLabel: { ru: "Поддержать учителя", kk: "Мұғалімді қолдау", en: "Support a teacher" },
+      panelTitle: { ru: "Поддержать учителя", kk: "Мұғалімді қолдау", en: "Support a teacher" },
+      teacherSearchPlaceholder: { ru: "Найти учителя...", kk: "Мұғалімді табу...", en: "Find a teacher..." },
+      confirmQuestion: { ru: "Поддержать {name}?", kk: "{name} қолдайсыз ба?", en: "Support {name}?" },
+      confirmHint: { ru: "Можно поддержать каждого учителя один раз с этого устройства.", kk: "Осы құрылғыдан әр мұғалімді бір рет қана қолдауға болады.", en: "You can support each teacher once from this device." },
+      confirmYes: { ru: "Да, поддержать", kk: "Иә, қолдаймын", en: "Yes, support" },
+      confirmCancel: { ru: "Отмена", kk: "Бас тарту", en: "Cancel" },
+      likedMsg: { ru: "Спасибо, {name}! ❤️", kk: "Рахмет, {name}! ❤️", en: "Thank you, {name}! ❤️" },
+      alreadyLiked: { ru: "Вы уже поддержали", kk: "Сіз қолдап қойдыңыз", en: "Already supported" }
     };
     const catNames = {
       "STEM": { ru: "STEM", kk: "STEM", en: "STEM" },
@@ -1000,6 +1277,203 @@
       }).join('');
     }
 
+    /* ---------- Thanks counter (shared via Netlify Function + Blobs, falls back to per-device) ---------- */
+    const THANKS_ENDPOINT = '/api/thanks';
+    let thanksCounts = {};
+    let thanksOnline = true; // becomes false if the API isn't reachable (e.g. function not deployed yet)
+    let thankedTeachers = new Set();
+    try { thankedTeachers = new Set(JSON.parse(store.get('thanked') || '[]')); } catch (e) {}
+
+    /* ---------- Full staff directory (from the school's staff-list document) ----------
+       Vacant positions ("Вакант") and entries struck through in the source document
+       are left out since they aren't current staff. */
+    const teacherDirectory = [
+      { name: "Бершимова Айгерим Касымбековна", role: "Директор, информатика пәні мұғалімі" },
+      { name: "Жартанова Акмарал Кайроллиновна", role: "ДТЖЖ орынбасары, қазақ тілі пәні мұғалімі" },
+      { name: "Аманкелди Айжан", role: "ДОЖ орынбасары, информатика пәні мұғалімі" },
+      { name: "Касымова Г.М.", role: "Зам ДОЖ" },
+      { name: "Кусаинова Меиргуль Касеновна", role: "ДҒӨЖЖ орынбасары, география пәні мұғалімі" },
+      { name: "Әбдікәрім Камила Жұмаханқызы", role: "ДТЖЖ орынбасары" },
+      { name: "Абуталипова Балжан Мерекеевна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Адий Кульзия", role: "Математика пәні мұғалімі" },
+      { name: "Адилева Сания Калихановна", role: "Тарих пәнінің мұғалімі" },
+      { name: "Алина Аружан Нурланкызы", role: "Информатика пәні мұғалімі" },
+      { name: "Аманжолова Наргиз Кайроллиновна", role: "Педагог-ұйымдастырушы" },
+      { name: "Амантаева Гульжихан Набиевна", role: "Педагог-психолог" },
+      { name: "Амиржанова Шуга Кенжебековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Амиржанова Гульдана Сабиржановна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Асылбекова Индира Канатовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Аканова Гулжаз Жауынбайкызы", role: "Математика пәнінің мұғалімі" },
+      { name: "Ауенова Гульмира Зинулловна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Ахметжанова Инкар Рамазановна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Ахметов Алмат Хайруллович", role: "Информатика пәнінің мұғалімі" },
+      { name: "Ахметова Гульзат Алтынбековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Ашкен Раухат Рашидұлы", role: "Информатика пәнінің мұғалімі" },
+      { name: "Абдуллаева Эльмира Жумадуллакызы", role: "Педагог ұйымдастырушы" },
+      { name: "Байдильденова Куляш Муслимовна", role: "Көркем еңбек пәнінің мұғалімі" },
+      { name: "Байдуллина Айгуль Мауленовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Баймұхан Сәлия Ғалымбекқызы", role: "Ағылшын тілі мұғалімі" },
+      { name: "Балпанова Гулмира Оразалиновна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Батколла Ұлжан Әскеркызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Бейсембаев Данияр Акбарович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Бекболатова Лаура Даулетовна", role: "Физика пәнінің мұғалімі" },
+      { name: "Бекмаганбетов Бекет Кумирсерикович", role: "Алғашқы әскери пәнінің мұғалімі" },
+      { name: "Бектасова Амина Ергалиевна", role: "Математика пәнінің мұғалімі" },
+      { name: "Бекхожин Медет Асыгатович", role: "Музыка пәнінің мұғалімі" },
+      { name: "Болатова Милана Женисовна", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Бугабай Арман", role: "Тарих пәнінің мұғалімі" },
+      { name: "Букенеева Айгерим Каиржановна", role: "Биология пәні мұғалімі" },
+      { name: "Бірлес Ақбота Ақылбекқызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Даулетова Гульназ Койшебаевна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Демесинов Сагындык Конаевич", role: "Информатика пәнінің мұғалімі" },
+      { name: "Досмуханова Жамиля Ахметханкызы", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Еркенова Анар Ризабековна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Естанов Марат Кабешович", role: "Көркем еңбек пәнінің мұғалімі" },
+      { name: "Жаксылык Аманбол Ерболулы", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Жанатаева Зарина Габитовна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Жиенбаева Маркен Капаровна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Ибраева Гулнар", role: "Бастауыш сынып мұғалімі" },
+      { name: "Ибраева Жанагул Амангельдиевна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Иврай Нургуль", role: "Тарих пәні мұғалімі" },
+      { name: "Кабиева Карлыгаш Амиржановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Канафина Акбота Бахытовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Канафина Дильназ Кайсаровна", role: "Педагог ұйымдастырушы" },
+      { name: "Касеинова Алия Зейнелгабиденовна", role: "Әлеуметтік педагог" },
+      { name: "Кенжеева Гулжаухар Жаксылыковна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Кожантаева Айдана Досболатовна", role: "Педагог-ұйымдастырушы" },
+      { name: "Койбагарова Айжан Есенгельдиновна", role: "Педагог ұйымдастырушы" },
+      { name: "Кошанов Серик Сулейменович", role: "Биология пәні мұғалімі" },
+      { name: "Кульбаев Марат Жусупович", role: "Информатика пәні мұғалімі" },
+      { name: "Қасымбек Маржан Ерболаткызы", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Малгаждарова Раушан Сырымбетовна", role: "География пәнінің мұғалімі" },
+      { name: "Мустафина Динара Сайрановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Мұрат Жандос Аскерұлы", role: "Информатика пәнінің мұғалімі" },
+      { name: "Мұсабек Асылжан Балтабекқызы", role: "Ағылшын тілі мұғалімі" },
+      { name: "Напухан Аягуль", role: "Математика пәнінің мұғалімі" },
+      { name: "Нурболат Назерке", role: "Ағылшын тілі мұғалімі" },
+      { name: "Орынбаева Шайза Ерсайынкызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Саденова Айнагуль Зарлыковна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Садуева Шынар Женисовна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Сактаганова Нургул Николаевна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Салимжан Әсемгүл Қалымтайкызы", role: "Педагог-ұйымдастырушы" },
+      { name: "Саяхат Мейрамгуль", role: "Бастауыш сынып мұғалімі" },
+      { name: "Сапарбекова Гулбахыт Бектаскызы", role: "Педагог ұйымдастырушы" },
+      { name: "Сарсенбаева Жанерке Айтбековна", role: "Педагог ұйымдастырушы" },
+      { name: "Талгатұлы Нияз", role: "Информатика пәнінің мұғалімі" },
+      { name: "Тобулбаева Аягоз Жанызаккызы", role: "Ағылшын пәні мұғалімі" },
+      { name: "Тлеубергенов Ержан Урунбасарович", role: "Информатика пәнінің мұғалімі" },
+      { name: "Толегенов Елдос Жомартович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Тюлешева Анар Ибраевна", role: "Құқық негіздері пәні мұғалімі" },
+      { name: "Узакбаев Бактияр Серикович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Шайзада Байболат", role: "Физика пәнінің мұғалімі" },
+      { name: "Шапкенова Марал Сериковна", role: "Химия пәнінің мұғалімі" },
+      { name: "Шаяхметова Рымжан Мураткеевна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Шегенева Бакыт Болатовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Хамит Динара Коблановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Бейсенова Слушаш Мейрамбековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Дюсекеева Айжан Темиргалиевна", role: "Логопед совместитель" },
+      { name: "Кульчукова Сайран Кайратовна", role: "Домбра үйірмесінің жетекшісі" }
+    ];
+
+    function escapeAttr(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    }
+
+    function teacherRow(name, role) {
+      const thanked = thankedTeachers.has(name);
+      const count = thanksCounts[name] || 0;
+      return `<li class="teacher-row">
+        <div class="ava">${getInitials(name)}</div>
+        <div class="tr-info"><span class="tr-name">${name}</span><span class="tr-role">${role}</span></div>
+        <button type="button" class="thanks-btn${thanked ? ' thanked' : ''}" data-teacher="${escapeAttr(name)}"${thanked ? ` title="${ui.alreadyLiked[currentLang]}"` : ''}>
+          ${icon('heart')}<span class="thanks-count">${count}</span>
+        </button>
+      </li>`;
+    }
+
+    function renderTeacherList() {
+      const q = $('teacher-search').value.trim().toLowerCase();
+      const rows = q
+        ? teacherDirectory.filter(t => (t.name + ' ' + t.role).toLowerCase().includes(q))
+        : teacherDirectory;
+      $('teacher-list').innerHTML = rows.length
+        ? rows.map(t => teacherRow(t.name, t.role)).join('')
+        : `<li class="no-results">${ui.noResults[currentLang]}</li>`;
+    }
+
+    function openTeacherPanel() {
+      $('panel-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+      renderTeacherList();
+      $('teacher-search').focus({ preventScroll: true });
+    }
+
+    function closeTeacherPanel() {
+      $('panel-overlay').hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    let pendingLike = null;
+
+    function openConfirm(teacher, btn) {
+      pendingLike = { teacher, btn };
+      $('confirm-text').textContent = ui.confirmQuestion[currentLang].replace('{name}', teacher);
+      $('confirm-hint').textContent = ui.confirmHint[currentLang];
+      $('confirm-yes').textContent = ui.confirmYes[currentLang];
+      $('confirm-cancel').textContent = ui.confirmCancel[currentLang];
+      $('confirm-overlay').hidden = false;
+    }
+
+    function closeConfirm() {
+      $('confirm-overlay').hidden = true;
+      pendingLike = null;
+    }
+
+    function syncThanksUI() {
+      document.querySelectorAll('.thanks-btn').forEach(btn => {
+        const t = btn.dataset.teacher;
+        btn.querySelector('.thanks-count').textContent = thanksCounts[t] || 0;
+        btn.classList.toggle('thanked', thankedTeachers.has(t));
+      });
+    }
+
+    async function loadThanksCounts() {
+      try {
+        const res = await fetch(THANKS_ENDPOINT);
+        if (!res.ok) throw new Error('bad response');
+        thanksCounts = await res.json();
+        thanksOnline = true;
+      } catch (e) {
+        thanksOnline = false; // page still works fully offline of this feature
+      }
+      syncThanksUI();
+    }
+
+    async function sayThanks(teacher, btn) {
+      if (thankedTeachers.has(teacher)) return;
+      thankedTeachers.add(teacher);
+      store.set('thanked', JSON.stringify([...thankedTeachers]));
+      thanksCounts[teacher] = (thanksCounts[teacher] || 0) + 1;
+      syncThanksUI();
+      btn.classList.add('thanks-pop');
+      setTimeout(() => btn.classList.remove('thanks-pop'), 350);
+      if (!thanksOnline) return; // count stays local-only on this device
+      try {
+        const res = await fetch(THANKS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ teacher })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          thanksCounts[teacher] = data.count;
+          syncThanksUI();
+        }
+      } catch (e) {
+        // request failed after we'd already counted it locally; leave as-is
+      }
+    }
+
     function setLang(lang) {
       currentLang = lang;
       store.set('lang', lang);
@@ -1009,13 +1483,17 @@
       $('page-title').textContent = translations.title[lang];
       $('class-select-label').textContent = translations.selectClassLabel[lang];
       $('search-input').placeholder = ui.searchPlaceholder[lang];
+      $('fab-teachers-label').textContent = ui.fabLabel[lang];
+      $('panel-title').textContent = ui.panelTitle[lang];
+      $('teacher-search').placeholder = ui.teacherSearchPlaceholder[lang];
+      if (!$('panel-overlay').hidden) renderTeacherList();
       syncTheme();
       updateLiveStatus();
       generateFilters();
       renderGrid();
     }
 
-    function launchConfetti() {
+    function launchConfetti(customMsg) {
       const colors = ['#0097B5', '#FEC50C', '#EEF3FA'];
       const layer = document.createElement('div');
       layer.className = 'confetti-layer';
@@ -1038,7 +1516,7 @@
       };
       const msg = document.createElement('div');
       msg.className = 'confetti-msg';
-      msg.textContent = msgs[currentLang] || msgs.en;
+      msg.textContent = customMsg || msgs[currentLang] || msgs.en;
       document.body.appendChild(msg);
       requestAnimationFrame(() => msg.classList.add('show'));
 
@@ -1054,6 +1532,32 @@
         renderGrid();
       });
       $('search-input').addEventListener('input', renderGrid);
+      loadThanksCounts();
+
+      // Teacher appreciation panel
+      $('fab-teachers').addEventListener('click', openTeacherPanel);
+      $('panel-close').addEventListener('click', closeTeacherPanel);
+      $('panel-overlay').addEventListener('click', e => { if (e.target === $('panel-overlay')) closeTeacherPanel(); });
+      $('teacher-search').addEventListener('input', renderTeacherList);
+      $('teacher-list').addEventListener('click', e => {
+        const btn = e.target.closest('.thanks-btn');
+        if (!btn || btn.classList.contains('thanked')) return;
+        openConfirm(btn.dataset.teacher, btn);
+      });
+      $('confirm-cancel').addEventListener('click', closeConfirm);
+      $('confirm-overlay').addEventListener('click', e => { if (e.target === $('confirm-overlay')) closeConfirm(); });
+      $('confirm-yes').addEventListener('click', () => {
+        if (!pendingLike) return;
+        const { teacher, btn } = pendingLike;
+        closeConfirm();
+        sayThanks(teacher, btn);
+        launchConfetti(ui.likedMsg[currentLang].replace('{name}', teacher));
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (!$('confirm-overlay').hidden) closeConfirm();
+        else if (!$('panel-overlay').hidden) closeTeacherPanel();
+      });
 
       // Easter egg: tap the logo 5 times quickly for a flag-colored confetti burst
       let brandTaps = [];
