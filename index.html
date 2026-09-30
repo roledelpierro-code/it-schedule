@@ -1520,6 +1520,8 @@
       { name: "Кульчукова Сайран Кайратовна", role: "Домбра үйірмесінің жетекшісі" }
     ];
 
+    const COUNTER_NAMESPACE = "itbilim-kazakhstan-2026";
+
     function escapeAttr(str) {
       return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     }
@@ -1563,10 +1565,8 @@
     function openConfirm(teacher, btn) {
       pendingLike = { teacher, btn };
       $('confirm-text').textContent = ui.confirmQuestion[currentLang].replace('{name}', teacher);
-      $('confirm-hint').textContent = ui.confirmHint[currentLang];
-      $('confirm-yes').textContent = ui.confirmYes[currentLang];
-      $('confirm-cancel').textContent = ui.confirmCancel[currentLang];
-      $('confirm-overlay').hidden = false;
+      $('confirm-hint').textContent = ui.confirmHint[currentLang];$('confirm-yes').textContent = ui.confirmYes[currentLang];
+      $('confirm-cancel').textContent = ui.confirmCancel[currentLang];$('confirm-overlay').hidden = false;
     }
 
     function closeConfirm() {
@@ -1584,12 +1584,23 @@
 
     async function loadThanksCounts() {
       try {
-        const res = await fetch(THANKS_ENDPOINT);
-        if (!res.ok) throw new Error('bad response');
-        thanksCounts = await res.json();
         thanksOnline = true;
+        if (typeof teacherDirectory !== 'undefined' && Array.isArray(teacherDirectory)) {
+          await Promise.all(
+            teacherDirectory.map(async (t) => {
+              const key = encodeURIComponent(t.name.trim().toLowerCase());
+              try {
+                const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/`);
+                if (res.ok) {
+                  const data = await res.json();
+                  thanksCounts[t.name] = data.count || 0;
+                }
+              } catch (e) {}
+            })
+          );
+        }
       } catch (e) {
-        thanksOnline = false; // page still works fully offline of this feature
+        thanksOnline = false;
       }
       syncThanksUI();
     }
@@ -1602,20 +1613,17 @@
       syncThanksUI();
       btn.classList.add('thanks-pop');
       setTimeout(() => btn.classList.remove('thanks-pop'), 350);
-      if (!thanksOnline) return; // count stays local-only on this device
+
+      const key = encodeURIComponent(teacher.trim().toLowerCase());
       try {
-        const res = await fetch(THANKS_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ teacher })
-        });
+        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/up`);
         if (res.ok) {
           const data = await res.json();
           thanksCounts[teacher] = data.count;
           syncThanksUI();
         }
       } catch (e) {
-        // request failed after we'd already counted it locally; leave as-is
+        console.error("Ошибка сети:", e);
       }
     }
 
@@ -1625,12 +1633,9 @@
       document.documentElement.lang = lang;
       document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
       $('eyebrow').textContent = ui.eyebrow[lang];
-      $('page-title').textContent = translations.title[lang];
-      $('class-select-label').textContent = translations.selectClassLabel[lang];
-      $('search-input').placeholder = ui.searchPlaceholder[lang];
-      $('fab-teachers-label').textContent = ui.fabLabel[lang];
-      $('panel-title').textContent = ui.panelTitle[lang];
-      $('teacher-search').placeholder = ui.teacherSearchPlaceholder[lang];
+      $('page-title').textContent = translations.title[lang];$('class-select-label').textContent = translations.selectClassLabel[lang];
+      $('search-input').placeholder = ui.searchPlaceholder[lang];$('fab-teachers-label').textContent = ui.fabLabel[lang];
+      $('panel-title').textContent = ui.panelTitle[lang];$('teacher-search').placeholder = ui.teacherSearchPlaceholder[lang];
       if (!$('panel-overlay').hidden) renderTeacherList();
       syncTheme();
       updateLiveStatus();
@@ -1680,18 +1685,14 @@
       loadThanksCounts();
 
       // Teacher appreciation panel
-      $('fab-teachers').addEventListener('click', openTeacherPanel);
-      $('panel-close').addEventListener('click', closeTeacherPanel);
-      $('panel-overlay').addEventListener('click', e => { if (e.target === $('panel-overlay')) closeTeacherPanel(); });
-      $('teacher-search').addEventListener('input', renderTeacherList);
-      $('teacher-list').addEventListener('click', e => {
+      $('fab-teachers').addEventListener('click', openTeacherPanel);$('panel-close').addEventListener('click', closeTeacherPanel);
+      $('panel-overlay').addEventListener('click', e => { if (e.target ===$('panel-overlay')) closeTeacherPanel(); });
+      $('teacher-search').addEventListener('input', renderTeacherList);$('teacher-list').addEventListener('click', e => {
         const btn = e.target.closest('.thanks-btn');
         if (!btn || btn.classList.contains('thanked')) return;
         openConfirm(btn.dataset.teacher, btn);
       });
-      $('confirm-cancel').addEventListener('click', closeConfirm);
-      $('confirm-overlay').addEventListener('click', e => { if (e.target === $('confirm-overlay')) closeConfirm(); });
-      $('confirm-yes').addEventListener('click', () => {
+      $('confirm-cancel').addEventListener('click', closeConfirm);$('confirm-overlay').addEventListener('click', e => { if (e.target === $('confirm-overlay')) closeConfirm(); });$('confirm-yes').addEventListener('click', () => {
         if (!pendingLike) return;
         const { teacher, btn } = pendingLike;
         closeConfirm();
