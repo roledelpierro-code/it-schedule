@@ -1520,7 +1520,10 @@
       { name: "Кульчукова Сайран Кайратовна", role: "Домбра үйірмесінің жетекшісі" }
     ];
 
-    const COUNTER_NAMESPACE = "itbilim-kazakhstan-2026";
+    <script>
+    // ТВОЙ API-КЛЮЧ (заменишь потом)
+    const COUNTER_API_KEY = "ut_XwcFojRguY864RGBRPHFIPvKoFHCX1bVw10V5QAy"; 
+    const COUNTER_NAMESPACE = "itbilim-2026"; 
 
     function escapeAttr(str) {
       return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -1590,7 +1593,12 @@
             teacherDirectory.map(async (t) => {
               const key = encodeURIComponent(t.name.trim().toLowerCase());
               try {
-                const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/`);
+                const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/`, {
+                  headers: {
+                    'Authorization': `Bearer ${COUNTER_API_KEY}`,
+                    'x-api-key': COUNTER_API_KEY
+                  }
+                });
                 if (res.ok) {
                   const data = await res.json();
                   thanksCounts[t.name] = data.count || 0;
@@ -1609,14 +1617,21 @@
       if (thankedTeachers.has(teacher)) return;
       thankedTeachers.add(teacher);
       store.set('thanked', JSON.stringify([...thankedTeachers]));
+      
       thanksCounts[teacher] = (thanksCounts[teacher] || 0) + 1;
       syncThanksUI();
+      
       btn.classList.add('thanks-pop');
       setTimeout(() => btn.classList.remove('thanks-pop'), 350);
 
       const key = encodeURIComponent(teacher.trim().toLowerCase());
       try {
-        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/up`);
+        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${key}/up`, {
+          headers: {
+            'Authorization': `Bearer ${COUNTER_API_KEY}`,
+            'x-api-key': COUNTER_API_KEY
+          }
+        });
         if (res.ok) {
           const data = await res.json();
           thanksCounts[teacher] = data.count;
@@ -1705,7 +1720,7 @@
         else if (!$('panel-overlay').hidden) closeTeacherPanel();
       });
 
-      // Easter egg: tap the logo 5 times quickly for a flag-colored confetti burst
+      // Easter egg
       let brandTaps = [];
       document.querySelector('.brand').addEventListener('click', () => {
         const now = Date.now();
@@ -1730,7 +1745,6 @@
         const s = slotKey();
         if (s !== last) { last = s; renderGrid(); }
       }, 30000);
-      // iOS pauses timers in the background, so refresh when the tab comes back
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) { last = slotKey(); updateLiveStatus(); renderGrid(); }
       });
