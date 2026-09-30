@@ -1540,7 +1540,7 @@
     </button>
     </li>`;
 }
-    }
+      {
 
     function renderTeacherList() {
       const q = $('teacher-search').value.trim().toLowerCase();
@@ -1551,12 +1551,14 @@
         ? rows.map(t => teacherRow(t.name, t.role)).join('')
         : `<li class="no-results">${ui.noResults[currentLang]}</li>`;
     }
+    
 
     function openTeacherPanel() {
       $('panel-overlay').hidden = false;
       document.body.style.overflow = 'hidden';
       renderTeacherList();
       $('teacher-search').focus({ preventScroll: true });
+    
     }
 
     function closeTeacherPanel() {
