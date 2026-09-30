@@ -1528,16 +1528,17 @@
       return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
     }
 
-    function teacherRow(name, role) {
-      const thanked = thankedTeachers.has(name);
-      const count = thanksCounts[name] || 0;
-      return `<li class="teacher-row">
-        <div class="ava">${getInitials(name)}</div>
-        <div class="tr-info"><span class="tr-name">${name}</span><span class="tr-role">${role}</span></div>
-        <button type="button" class="thanks-btn${thanked ? ' thanked' : ''}" data-teacher="${escapeAttr(name)}"${thanked ? ` title="${ui.alreadyLiked[currentLang]}"` : ''}>
-          ${icon('heart')}<span class="thanks-count">${count}</span>
-        </button>
-      </li>`;
+   function teacherRow(name, role) {
+    const thanked = thankedTeachers.has(name);
+    const count = thanksCounts[name] || 0;
+    return `<li class="teacher-row">
+    <div class="ava">${getInitials(name)}</div>
+    <div class="tr-info"><span class="tr-name">${name}</span><span class="tr-role">${role}</span></div>
+    <button type="button" class="thanks-btn${thanked ? ' thanked' : ''}" data-teacher="${escapeAttr(name)}" ${thanked ? `title="${ui.alreadyLiked[currentLang]}"` : ''}>
+    ${icon('heart')}<span>${count}</span>
+    </button>
+    </li>`;
+}
     }
 
     function renderTeacherList() {
