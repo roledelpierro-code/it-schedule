@@ -1014,7 +1014,7 @@
        5. Заголовок сайта .................. translations.title  и  ui.eyebrow (жёлтая плашка сверху)
        6. Концерт (время, место, текст) .... const CONCERT  и  const extra
        7. Письмо для 12 классов ............ extra.letterText, extra.letterSign
-       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на jsonbin.io (JSONBIN_ID, JSONBIN_KEY)
+       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на Firebase Realtime Database (FIREBASE_DB_URL)
        9. Цвета ............................ в самом верху файла, блок :root { ... }
        Всегда сохраняйте кавычки " " и запятые в конце строк — без них сайт сломается.
        ===================================================================== */
@@ -1054,8 +1054,8 @@
       "Еңбек": { ru: "Труд", kk: "Еңбек", en: "Technology", cat: "Жалпы" },
       "Караоке": { ru: "Караоке", kk: "Караоке", en: "Karaoke", cat: "Өнер" },
       "Жәсөспірім тілі": { ru: "Язык молодежи", kk: "Жәсөспірім тілі", en: "Teenager Launguage", cat: "Тілдер" },
-      "Робототехника": { ru: "Робототехника", kk: "Робототехника", en: "Robotics", cat: "STEM" }
-      "Ағылшын тілі": { ru: "Англиский язык", kk: "Ағылшын тілі", en: "English launguage", cat: "Тілдер" }
+      "Робототехника": { ru: "Робототехника", kk: "Робототехника", en: "Robotics", cat: "STEM" },
+      "Ағылшын тілі": { ru: "Английский язык", kk: "Ағылшын тілі", en: "English", cat: "Тілдер" }
     };
 
     const translations = {
@@ -1423,16 +1423,10 @@
       }).join('') + extrasHTML(q);
     }
 
-    /* ---------- Счётчик «Поддержать учителя» через jsonbin.io ----------
-       Инструкция:
-       1. Зайдите на https://jsonbin.io → Sign up (бесплатно)
-       2. Нажмите «+ NEW BIN», вставьте {} и нажмите CREATE
-       3. Скопируйте ID бина (строка вида 6830abc123...) → вставьте в JSONBIN_ID
-       4. В разделе API Keys скопируйте ваш ключ → вставьте в JSONBIN_KEY
-       Если ключ не вставить — кнопка «Поддержать» не будет сохранять на сервер,
-       но локально (на устройстве) работать будет. */
-    const JSONBIN_ID  = "6abde324ac6210605a07cfde";  // ← вставьте ID бина сюда
-    const JSONBIN_KEY = "$2a$10$gN5TCkPWCRIFuQ3PknESfOS6XasUlotNwDA30N2j82Vv2KfQg1zvy";  // ← вставьте API Key сюда
+    /* ---------- Счётчик «Поддержать учителя» через Firebase Realtime Database ----------
+       Если хотите обнулить все лайки — зайдите в Firebase Console → Realtime Database
+       и удалите узел "thanks". */
+    const FIREBASE_DB_URL = "https://ittempbase-default-rtdb.europe-west1.firebasedatabase.app";
     let thanksCounts = {};
     let thanksOnline = true;
     let thankedTeachers = new Set();
@@ -1592,17 +1586,17 @@
       });
     }
 
-    /* jsonbin helpers */
-    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-    const JSONBIN_HDR = { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY };
+    /* Firebase REST helpers (не нужно никаких npm или import — работает как обычный fetch) */
+    function fbUrl(path) {
+      return `${FIREBASE_DB_URL}/thanks/${encodeURIComponent(path)}.json`;
+    }
 
     async function loadThanksCounts() {
-      if (!JSONBIN_ID || !JSONBIN_KEY) { syncThanksUI(); return; }
       try {
-        const res = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
+        const res = await fetch(`${FIREBASE_DB_URL}/thanks.json`);
         if (res.ok) {
           const data = await res.json();
-          thanksCounts = data.record || {};
+          thanksCounts = data || {};
           thanksOnline = true;
         }
       } catch (e) { thanksOnline = false; }
@@ -1619,17 +1613,20 @@
       btn.classList.add('thanks-pop');
       setTimeout(() => btn.classList.remove('thanks-pop'), 350);
 
-      if (!JSONBIN_ID || !JSONBIN_KEY) return; // работает локально, не сохраняет на сервер
-
       try {
-        // читаем свежие данные, прибавляем 1, пишем обратно
-        const r1 = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
-        const cur = r1.ok ? ((await r1.json()).record || {}) : {};
-        cur[teacher] = (cur[teacher] || 0) + 1;
-        thanksCounts[teacher] = cur[teacher];
-        await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HDR, body: JSON.stringify(cur) });
+        // TRANSACTION: читаем текущее значение и атомарно прибавляем 1
+        const url = fbUrl(teacher);
+        const r1 = await fetch(url);
+        const cur = r1.ok ? (await r1.json() || 0) : 0;
+        const next = cur + 1;
+        await fetch(url, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(next)
+        });
+        thanksCounts[teacher] = next;
         syncThanksUI();
-      } catch (e) { console.error("jsonbin error:", e); }
+      } catch (e) { console.error("firebase error:", e); }
     }
 
     function setLang(lang) {
