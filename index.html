@@ -1014,7 +1014,7 @@
        5. Заголовок сайта .................. translations.title  и  ui.eyebrow (жёлтая плашка сверху)
        6. Концерт (время, место, текст) .... const CONCERT  и  const extra
        7. Письмо для 12 классов ............ extra.letterText, extra.letterSign
-       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на counterapi.dev v2 (COUNTER_NAMESPACE)
+       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на jsonbin.io (JSONBIN_ID, JSONBIN_KEY)
        9. Цвета ............................ в самом верху файла, блок :root { ... }
        Всегда сохраняйте кавычки " " и запятые в конце строк — без них сайт сломается.
        ===================================================================== */
@@ -1422,9 +1422,16 @@
       }).join('') + extrasHTML(q);
     }
 
-    /* ---------- Счётчик «Поддержать учителя» (общий для всех, через сервис counterapi.dev v2) ----------
-       COUNTER_NAMESPACE — «папка» счётчиков. Хотите обнулить все лайки — поменяйте название (например "itbilim-2027"). */
-    const COUNTER_NAMESPACE = "itbilim-2026";
+    /* ---------- Счётчик «Поддержать учителя» через jsonbin.io ----------
+       Инструкция:
+       1. Зайдите на https://jsonbin.io → Sign up (бесплатно)
+       2. Нажмите «+ NEW BIN», вставьте {} и нажмите CREATE
+       3. Скопируйте ID бина (строка вида 6830abc123...) → вставьте в JSONBIN_ID
+       4. В разделе API Keys скопируйте ваш ключ → вставьте в JSONBIN_KEY
+       Если ключ не вставить — кнопка «Поддержать» не будет сохранять на сервер,
+       но локально (на устройстве) работать будет. */
+    const JSONBIN_ID  = "";  // ← вставьте ID бина сюда
+    const JSONBIN_KEY = "";  // ← вставьте API Key сюда
     let thanksCounts = {};
     let thanksOnline = true;
     let thankedTeachers = new Set();
@@ -1584,26 +1591,20 @@
       });
     }
 
-    // Ключ счётчика = имя учителя маленькими буквами
-    function counterKey(name) { return encodeURIComponent(name.trim().toLowerCase()); }
+    /* jsonbin helpers */
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+    const JSONBIN_HDR = { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY };
 
     async function loadThanksCounts() {
+      if (!JSONBIN_ID || !JSONBIN_KEY) { syncThanksUI(); return; }
       try {
-        thanksOnline = true;
-        await Promise.all(
-          teacherDirectory.map(async (t) => {
-            try {
-              const res = await fetch(`https://api.counterapi.dev/v2/${COUNTER_NAMESPACE}/${counterKey(t.name)}/`);
-              if (res.ok) {
-                const data = await res.json();
-                thanksCounts[t.name] = data.value ?? data.count ?? 0;
-              }
-            } catch (e) {}
-          })
-        );
-      } catch (e) {
-        thanksOnline = false;
-      }
+        const res = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
+        if (res.ok) {
+          const data = await res.json();
+          thanksCounts = data.record || {};
+          thanksOnline = true;
+        }
+      } catch (e) { thanksOnline = false; }
       syncThanksUI();
     }
 
@@ -1614,20 +1615,20 @@
 
       thanksCounts[teacher] = (thanksCounts[teacher] || 0) + 1;
       syncThanksUI();
-
       btn.classList.add('thanks-pop');
       setTimeout(() => btn.classList.remove('thanks-pop'), 350);
 
+      if (!JSONBIN_ID || !JSONBIN_KEY) return; // работает локально, не сохраняет на сервер
+
       try {
-        const res = await fetch(`https://api.counterapi.dev/v2/${COUNTER_NAMESPACE}/${counterKey(teacher)}/up`);
-        if (res.ok) {
-          const data = await res.json();
-          thanksCounts[teacher] = data.value ?? data.count ?? 0;
-          syncThanksUI();
-        }
-      } catch (e) {
-        console.error("Ошибка сети:", e);
-      }
+        // читаем свежие данные, прибавляем 1, пишем обратно
+        const r1 = await fetch(JSONBIN_URL + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
+        const cur = r1.ok ? ((await r1.json()).record || {}) : {};
+        cur[teacher] = (cur[teacher] || 0) + 1;
+        thanksCounts[teacher] = cur[teacher];
+        await fetch(JSONBIN_URL, { method: 'PUT', headers: JSONBIN_HDR, body: JSON.stringify(cur) });
+        syncThanksUI();
+      } catch (e) { console.error("jsonbin error:", e); }
     }
 
     function setLang(lang) {
