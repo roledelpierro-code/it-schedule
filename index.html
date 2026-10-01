@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta id="theme-color" name="theme-color" content="#030F22">
+  <script>(function () { var t = "dark"; try { t = localStorage.getItem("theme") || "dark" } catch (e) { } document.documentElement.setAttribute("data-theme", t === "light" ? "light" : "dark") })();</script>
+  <title>IT Liceum - Self-Governance Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      /* ===== ЦВЕТА (тёмная тема). Меняйте коды вида #RRGGBB ===== */
+      /* --bg = фон страницы, --surface = фон карточек, --ink = цвет текста, --muted = серо-голубой (кнопки, второстепенный текст) */
+      /* --gold = жёлтый акцент (бейдж «Сейчас», рамка концерта) */
+      --bg: #030F22;
+      --surface: #0A203E;
+      --muted: #95A6BF;
+      --ink: #EEF3FA;
+      --on-muted: #030F22;
+      --header: rgba(3, 15, 34, .9);
+      --inset: rgba(3, 15, 34, .55);
+      --hero-b: #030F22;
+      --line: rgba(149, 166, 191, .22);
+      --chip: rgba(149, 166, 191, .14);
+      --shadow: 0 6px 24px -4px rgba(0, 0, 0, .5);
+      --gold: #FEC50C;
+      --on-gold: #030F22;
+      --focus: #FEC50C;
+      --r: 16px;
+      --pill: 9999px;
+      /* Change these three variables to customize the typography. */
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      --font: var(--font-main);
+    }
+
+    /* ===== ЦВЕТА светлой темы (те же переменные, но для светлого режима) ===== */
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #F3F6FB;
+      --surface: #FFFFFF;
+      --muted: #4A5D78;
+      --ink: #0A203E;
+      --on-muted: #FFFFFF;
+      --header: rgba(255, 255, 255, .92);
+      --inset: #F3F6FB;
+      --hero-b: #123262;
+      --line: rgba(10, 32, 62, .14);
+      --chip: rgba(10, 32, 62, .07);
+      --shadow: 0 4px 20px -2px rgba(10, 32, 62, .12);
+      --focus: #0A203E;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      background: var(--bg)
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+
+    .i {
+      width: 1em;
+      height: 1em;
+      flex: none;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    button,
+    select {
+      font-family: inherit
+    }
+
+    button:focus-visible,
+    select:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px
+    }
+
+    header {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+      background: var(--header);
+      -webkit-backdrop-filter: saturate(160%) blur(12px);
+      backdrop-filter: saturate(160%) blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 1.1rem
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      flex: none;
+      object-fit: cover;
+      border-radius: 7px
+    }
+
+    .brand .i {
+      font-size: 1.5rem;
+      color: var(--muted)
+    }
+
+    .tools {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .theme {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .theme .i-moon {
+      display: none
+    }
+
+    :root[data-theme="light"] .theme .i-sun {
+      display: none
+    }
+
+    :root[data-theme="light"] .theme .i-moon {
+      display: block
+    }
+
+    .lang {
+      display: flex;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--pill);
+      padding: 3px
+    }
+
+    .lang button {
+      -webkit-appearance: none;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 700;
+      padding: 8px 10px;
+      min-height: 36px;
+      border-radius: var(--pill);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .lang button[aria-pressed="true"] {
+      background: var(--muted);
+      color: var(--on-muted)
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #EEF3FA;
+      text-align: center;
+      padding: 28px 20px 60px;
+      background: linear-gradient(180deg, #0A203E, var(--hero-b));
+    }
+
+    .sun {
+      position: absolute;
+      right: -70px;
+      top: -70px;
+      width: 240px;
+      height: 240px;
+      opacity: .45;
+      pointer-events: none
+    }
+
+    .hero>*:not(.sun) {
+      position: relative
+    }
+
+    .eyebrow {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--on-gold);
+      font-weight: 800;
+      font-size: .85rem;
+      padding: 6px 14px;
+      border-radius: var(--pill);
+      margin-bottom: 14px
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(3, 15, 34, .6);
+      border: 1px solid rgba(149, 166, 191, .3);
+      padding: 8px 16px;
+      border-radius: var(--pill);
+      font-weight: 700;
+      font-size: .95rem
+    }
+
+    .status .i {
+      font-size: 1.1rem;
+      color: var(--gold)
+    }
+
+    .picker {
+      width: 100%;
+      max-width: 640px;
+      margin: -34px auto 0;
+      padding: 0 16px;
+      position: relative;
+      z-index: 2
+    }
+
+    .picker-box {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 14px 16px 16px;
+      box-shadow: var(--shadow)
+    }
+
+    .search-row {
+      position: relative;
+      margin-top: 12px;
+    }
+
+    .search-row .i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1.05rem;
+      pointer-events: none;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 12px 14px 12px 40px;
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--line);
+      border-radius: 12px;
+    }
+
+    #search-input::placeholder {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px dashed var(--line);
+      border-radius: var(--r);
+      padding: 32px 16px;
+      font-weight: 600;
+    }
+
+    .confetti-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      top: -20px;
+      width: 9px;
+      height: 14px;
+      opacity: .9;
+      animation: confetti-fall linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+        opacity: .2;
+      }
+    }
+
+    .confetti-msg {
+      position: fixed;
+      left: 50%;
+      top: 18%;
+      transform: translate(-50%, -10px);
+      z-index: 1000;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-weight: 800;
+      padding: 12px 22px;
+      border-radius: var(--pill);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease, transform .3s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .confetti-msg.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .brand {
+      cursor: pointer;
+    }
+
+    /* Teacher appreciation: FAB, panel, confirm dialog */
+    .fab {
+      -webkit-appearance: none;
+      appearance: none;
+      position: fixed;
+      right: 16px;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      z-index: 80;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--on-gold, #030F22);
+      border: none;
+      font-weight: 800;
+      font-size: .9rem;
+      padding: 13px 18px;
+      border-radius: var(--pill);
+      box-shadow: 0 8px 24px -4px rgba(0,0,0,.4);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .fab .i { font-size: 1.2rem; }
+
+    .panel-overlay,
+    .confirm-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(3, 15, 34, .55);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .panel-overlay[hidden],
+    .confirm-overlay[hidden] {
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .panel-overlay, .confirm-overlay { align-items: center; padding: 20px; }
+    }
+
+    .panel {
+      background: var(--surface);
+      width: 100%;
+      max-width: 560px;
+      max-height: min(82vh, 720px);
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    @media (min-width: 640px) {
+      .panel { border-radius: var(--r); max-height: 78vh; }
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 8px;
+    }
+
+    .panel-head h2 {
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .icon-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .panel-search {
+      margin: 0 18px 12px;
+    }
+
+    .teacher-list {
+      list-style: none;
+      overflow-y: auto;
+      padding: 4px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .teacher-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--inset);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .tr-info {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tr-name {
+      font-weight: 700;
+      font-size: .95rem;
+    }
+
+    .tr-role {
+      font-size: .78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .confirm-box {
+      background: var(--surface);
+      width: 100%;
+      max-width: 380px;
+      border-radius: 20px 20px 0 0;
+      padding: 22px 20px calc(20px + env(safe-area-inset-bottom));
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .confirm-box { border-radius: var(--r); }
+    }
+
+    #confirm-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .confirm-hint {
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .confirm-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      border: none;
+      border-radius: var(--pill);
+      padding: 13px 16px;
+      font-weight: 800;
+      font-size: .95rem;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .confirm-cancel {
+      background: var(--bg);
+      color: var(--ink);
+      border: 1px solid var(--line);
+    }
+
+    .confirm-yes {
+      background: var(--gold);
+      color: var(--on-gold, #030F22);
+    }
+
+    .picker label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px
+    }
+
+    .sel {
+      position: relative
+    }
+
+    .sel select {
+      width: 100%;
+      padding: 14px 44px 14px 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--bg);
+      border: 2px solid var(--line);
+      border-radius: 12px;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .sel::after {
+      content: "";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      pointer-events: none;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2395A6BF' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") center/cover no-repeat;
+    }
+
+    :root[data-theme="light"] .sel::after {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230A203E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    }
+
+    .grid {
+      flex: 1;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px calc(40px + env(safe-area-inset-bottom));
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+      align-content: start;
+    }
+
+    @media(min-width:768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media(min-width:1024px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr)
+      }
+    }
+
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    .card.now {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(254, 197, 12, .4), var(--shadow)
+    }
+
+
+    /* КОНЦЕРТ И ПИСЬМО: border — рамка, background — фон; у .letter background: #FFF8EC — цвет «бумаги» */
+    /* concert + letter */
+    .card.concert { grid-column: 1 / -1; border: 2px solid var(--gold); background: linear-gradient(135deg, rgba(254,197,12,.18), var(--surface) 60%); box-shadow: 0 0 0 3px rgba(254,197,12,.25), 0 0 28px rgba(254,197,12,.3), var(--shadow); animation: concertGlow 2.6s ease-in-out infinite }
+    .card.concert .subj { font-size: 1.4rem }
+    .card.concert .num { background: var(--gold); color: var(--on-gold) }
+    .concert-sub { color: var(--muted); font-size: .9rem; font-weight: 600 }
+    @keyframes concertGlow { 50% { box-shadow: 0 0 0 4px rgba(254,197,12,.45), 0 0 40px rgba(254,197,12,.5), var(--shadow) } }
+    .letter { grid-column: 1 / -1; position: relative; max-width: 680px; width: 100%; margin: 26px auto 10px; padding: 34px 28px 26px; background: #FFF8EC; color: #3B2A1E; border-radius: 6px; box-shadow: 0 10px 30px -6px rgba(0,0,0,.45); font-family: Georgia, 'Times New Roman', serif; line-height: 1.6; transform: rotate(-.6deg); border-top: 5px solid #F4A6C0 }
+    .letter-flap { position: absolute; top: -22px; left: 50%; transform: translateX(-50%); width: 44px; height: 44px; border-radius: 50%; background: #F4A6C0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 3px 8px rgba(0,0,0,.3) }
+    .letter h3 { font-size: 1.3rem; margin-bottom: 12px; color: #8A2F57 }
+    .letter p { margin-bottom: 10px; font-size: 1rem }
+    .letter .sign { text-align: right; font-style: italic; color: #8A2F57; margin: 14px 0 0 }
+    /* ЦВЕТЫ на письме: размер и положение — width/height/top/right/bottom/left ниже. Цвета лепестков — в <symbol id="peony"> и <symbol id="lily"> сразу после <body> (fill="#...") */
+    /* flowers on the letter */
+    .flora { position: absolute; pointer-events: none }
+    .flora-tr { top: -26px; right: -22px; width: 120px; height: 120px }
+    .flora-bl { bottom: -24px; left: -22px; width: 110px; height: 110px }
+    @media (max-width: 600px) { .flora-tr { width: 88px; height: 88px; top: -20px; right: -14px } .flora-bl { width: 80px; height: 80px; left: -14px; bottom: -18px } }
+    .badge-now {
+      position: absolute;
+      top: -11px;
+      right: 14px;
+      background: var(--gold);
+      color: var(--on-gold);
+      font-size: .75rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: var(--pill)
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .time {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--chip);
+      color: var(--ink);
+      padding: 5px 12px 5px 5px;
+      border-radius: var(--pill);
+      font-size: .85rem;
+      font-weight: 700
+    }
+
+    .num {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--muted);
+      color: var(--on-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem
+    }
+
+    .cab {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: .8rem;
+      font-weight: 600
+    }
+
+    .subj {
+      font-family: var(--font-secondary);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px
+    }
+
+    .cat {
+      display: inline-block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--chip);
+      padding: 2px 8px;
+      border-radius: 6px
+    }
+
+    .teacher {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 12px;
+      background: var(--inset);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--gold);
+      border-radius: 8px;
+      padding: 12px
+    }
+
+    .teacher>div:not(.ava) {
+      flex: 1 1 140px;
+      min-width: 0;
+    }
+
+    .ava {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 50%;
+      background: var(--muted);
+      color: var(--on-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .9rem
+    }
+
+    .tl {
+      display: block;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--muted)
+    }
+
+    .tn {
+      display: block;
+      font-size: .9rem;
+      font-weight: 600;
+      line-height: 1.25
+    }
+
+    .thanks-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      margin-left: auto;
+      flex: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: .85rem;
+      padding: 7px 12px;
+      border-radius: var(--pill);
+      cursor: pointer;
+      touch-action: manipulation;
+      transition: background .15s ease, color .15s ease, border-color .15s ease;
+    }
+
+    .thanks-btn .i { font-size: 1rem; }
+
+    .thanks-btn:active { transform: scale(.96); }
+
+    .thanks-btn.thanked {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--on-gold, #030F22);
+    }
+
+    .thanks-btn.thanked .i { fill: currentColor; }
+
+    .thanks-pop {
+      animation: thanks-pop .35s ease;
+    }
+
+    @keyframes thanks-pop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.25); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="peony" viewBox="0 0 100 100"><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(0 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(45 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(90 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(135 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(180 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(225 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(270 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="24" rx="15" ry="24" transform="rotate(315 50 50)" fill="#F8BBD0" stroke="#EE9BB8" stroke-width=".8"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(10 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(61 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(112 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(163 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(214 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(265 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="31" rx="12" ry="19" transform="rotate(316 50 50)" fill="#F48FB1" stroke="#E97CA3" stroke-width=".6"/><ellipse cx="50" cy="39" rx="9" ry="13" transform="rotate(20 50 50)" fill="#EC6B98"/><ellipse cx="50" cy="39" rx="9" ry="13" transform="rotate(92 50 50)" fill="#EC6B98"/><ellipse cx="50" cy="39" rx="9" ry="13" transform="rotate(164 50 50)" fill="#EC6B98"/><ellipse cx="50" cy="39" rx="9" ry="13" transform="rotate(236 50 50)" fill="#EC6B98"/><ellipse cx="50" cy="39" rx="9" ry="13" transform="rotate(308 50 50)" fill="#EC6B98"/><circle cx="50" cy="50" r="6" fill="#FFC94D"/><circle cx="50" cy="50" r="2.5" fill="#E8871E"/></symbol><symbol id="lily" viewBox="0 0 100 100"><g transform="rotate(0 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><g transform="rotate(60 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><g transform="rotate(120 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><g transform="rotate(180 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><g transform="rotate(240 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><g transform="rotate(300 50 50)"><path d="M50 50C35 34 38 14 50 2C62 14 65 34 50 50Z" fill="#FFF7F4" stroke="#F0B6C6" stroke-width="1"/><path d="M50 48L50 14" stroke="#F3A8BD" stroke-width="1.6" stroke-linecap="round"/></g><line x1="50" y1="50" x2="61.0" y2="30.9" stroke="#C9A24A" stroke-width="1.2"/><circle cx="61.0" cy="30.9" r="2.6" fill="#E8871E"/><line x1="50" y1="50" x2="72.0" y2="50.0" stroke="#C9A24A" stroke-width="1.2"/><circle cx="72.0" cy="50.0" r="2.6" fill="#E8871E"/><line x1="50" y1="50" x2="61.0" y2="69.1" stroke="#C9A24A" stroke-width="1.2"/><circle cx="61.0" cy="69.1" r="2.6" fill="#E8871E"/><line x1="50" y1="50" x2="39.0" y2="69.1" stroke="#C9A24A" stroke-width="1.2"/><circle cx="39.0" cy="69.1" r="2.6" fill="#E8871E"/><line x1="50" y1="50" x2="28.0" y2="50.0" stroke="#C9A24A" stroke-width="1.2"/><circle cx="28.0" cy="50.0" r="2.6" fill="#E8871E"/><line x1="50" y1="50" x2="39.0" y2="30.9" stroke="#C9A24A" stroke-width="1.2"/><circle cx="39.0" cy="30.9" r="2.6" fill="#E8871E"/></symbol><symbol id="leaf" viewBox="0 0 50 30"><path d="M0 28C4 10 24 0 50 2C44 20 24 32 0 28Z" fill="#4E9A6B"/><path d="M2 27C18 18 32 10 46 4" stroke="#3B7C54" stroke-width="1" fill="none"/></symbol></defs></svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-cap" viewBox="0 0 24 24">
+      <path
+        d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+      <path d="M22 10v6" />
+      <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+    </symbol>
+    <symbol id="i-door" viewBox="0 0 24 24">
+      <path d="M13 4h3a2 2 0 0 1 2 2v14" />
+      <path d="M2 20h3" />
+      <path d="M13 20h9" />
+      <path d="M10 12v.01" />
+      <path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.562Z" />
+    </symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+      <path d="M22 8c0-2.3-.8-4.3-2-6" />
+      <path
+        d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+      <path d="M4 2C2.8 3.7 2 5.7 2 8" />
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24">
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l6.24 6.19a1 1 0 0 0 1.52 0Z" />
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </symbol>
+  </svg>
+
+  <header>
+    <div class="brand"><img class="brand-logo" src="data:image/png;base64,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IQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3IUQIkAkdyGECBDJXQghAkRyF0KIAJHchRAiQCR3IYQIEMldCCECRHIXQogAkdyFECJAJHchhAgQyV0IIQJEchdCiACR3GvAAfvud+H5F4iKOa7N0RUk+wXnnlf3KxefAAd/df+61/FPI5J7DfjWIYfeedvtomLQdAXJfutNN9f9ysUnwPe++e261/FPI5J7DZDcq0RyFx4k98qQ3GuA5F4lkrvwILlXhuReAyT3KpHchQfJvTIk9xoguVeJ5C48SO6VIbnXAMm9SiR34UFyrwzJvQZI7lUiuQsPkntlSO41QHKvEsldeJDcK0NyrwGSe5VI7sKD5F4ZknsNkNyrRHIXHiT3ypDca4DkXiWS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nReSyJ4XkkekJ00jNYtoiXpE2bBbMjZZNhW8F/rdKb5Q9HWXUl0IU+5F76YWDrjbPToqJ533559+OqvkISwqCf7iaRTW5P5KdoKPzYczrduxbYY7zg032eES5ndb0hnNGr78CttGMbk9ofvv8qVLkTvWJir3DMXu3rlz2ZKlBPiE7VFAl9veK4rZozrfN3cAUKrON/u9T/PJPrZZ1fix44gNo+B90aKtb76ZmSwffdSzW7c7br2NSBbZ8UPXzl08cscUKA9N2PZhJH60mj8+3M753eF2EqeG236zJJ1NRMEU/Xv19lyVk7ttqY/c6V745b5k4cLBg+6NjqDq03fuzFklZ6y+uXkzIarNpucb2cwQooT4/uFZSIo/tcveIwGJL12yZP7caEbTzBnRzr38vCR7MslH8YoKsoPn5zalidtvd+BG/z575XKfBLm8toY8Pjkk8nu82hm/00t7Md7EIlUCjbXPP3/Bub9Pyp289juab813R+52gAGpYXFMSbmTR07u1BR3tEvzAY1x8F7U7ynFJy3fyH5vULljE5SBnenpmy88A+473n2XTj1FlvJ9xqltCdvtSAc7dwZxm9zN7G6jVFvbYnJ386BtfIb+Oy0En2tTaFAefVIaDyoARRzP2mg7mNxxtyeCfmfLFkL75mof7UUVVftcP31vs6frfP60Vbd1OD19WwpLOMlH//255zzGGTd6dPs77rzlxpuAWt21y91+udtcZsJbut6knu22aKdD2D4t7oCI5MGnblk/cscXmKJ8uUM5cl84dy5J0c3ONe1yN+9QcrIgtu14Z7vrrrnW9n0jhLejuAhUyVO7hZv1WuROni6YNz/K6BkzbYbiqocf9nzci3//e7RPb1MTWYOXyabc9px2JmLK7HZktjs4O5/X+S0no1G4/A429/Xs1p0kJWsohLYEz+6T8y1so3a+mo25R3K/4caWyp3EsQVu/hdS/nkVkRbRDxWTOkXZsFbfjby7PURTfpfii9JYcnf7ySAOlEEZoqdPEaTwvZM97vHW668Tll51+RW42B0sYMe52Qh7MmxPyj3ld9tgzw4u4E1OPv4EdMB7XnzhRVwAisdH0K9PHzssKar2s2dHcqcjnC3NTevX06MnAJw0IRqTGW699XzY3r8woIsrfJ9k8J4/ltN2nRwd99mjLSfnzVv9yCMe4yycM4dm77abbwFc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" alt="IT Council logo">IT Liceum</div>
+    <div class="tools">
+      <button type="button" class="theme" id="theme-btn"><svg class="i i-sun" aria-hidden="true">
+          <use href="#i-sun" />
+        </svg><svg class="i i-moon" aria-hidden="true">
+          <use href="#i-moon" />
+        </svg></button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="kk">ҚАЗ</button>
+        <button type="button" data-lang="ru" aria-pressed="true">РУС</button>
+        <button type="button" data-lang="en">ENG</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <svg class="sun" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="17" fill="#FEC50C" />
+      <circle cx="50" cy="50" r="31" fill="none" stroke="#FEC50C" stroke-width="12" stroke-dasharray="4 8.15" />
+    </svg>
+    <span class="eyebrow" id="eyebrow">День Независимости</span>
+    <h1 id="page-title">День самоуправления</h1>
+    <div class="status" role="status" aria-live="polite">
+      <svg class="i" aria-hidden="true">
+        <use href="#i-bell" />
+      </svg>
+      <span id="current-status-text">Загрузка...</span>
+    </div>
+  </section>
+
+  <div class="picker">
+    <div class="picker-box">
+      <label for="class-select" id="class-select-label">Выберите класс</label>
+      <div class="sel"><select id="class-select"></select></div>
+      <div class="search-row">
+        <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+        <input type="search" id="search-input" autocomplete="off" inputmode="search">
+      </div>
+    </div>
+  </div>
+
+  <main class="grid" id="grid-container">
+    <article class="card">
+      <div class="row">
+        <div class="time"><span class="num">1</span>09:00 - 09:45</div>
+        <div class="cab">A29 каб. • 10 «Ә»</div>
+      </div>
+      <div>
+        <div class="subj">Алгебра</div><span class="cat">STEM</span>
+      </div>
+      <div class="teacher">
+        <div class="ava">ТУ</div>
+        <div><span class="tl">Учитель дня</span><span class="tn">Тулегенова К., Сансызбай Р.</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="row">
+        <div class="time"><span class="num">2</span>09:55 - 10:40</div>
+        <div class="cab">C/3 каб. • 10 «Ә»</div>
+      </div>
+      <div>
+        <div class="subj">Английский язык</div><span class="cat">Языки</span>
+      </div>
+      <div class="teacher">
+        <div class="ava">КИ</div>
+        <div><span class="tl">Учитель дня</span><span class="tn">Кипасов А., Қасымбек А.</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="row">
+        <div class="time"><span class="num">3</span>10:55 - 11:40</div>
+        <div class="cab">A32 каб. • 10 «Ә»</div>
+      </div>
+      <div>
+        <div class="subj">Физика</div><span class="cat">STEM</span>
+      </div>
+      <div class="teacher">
+        <div class="ava">ФА</div>
+        <div><span class="tl">Учитель дня</span><span class="tn">Фазыл Арғын, Серик Уарис</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="row">
+        <div class="time"><span class="num">4</span>11:50 - 12:35</div>
+        <div class="cab">A30 каб. • 10 «Ә»</div>
+      </div>
+      <div>
+        <div class="subj">Геометрия</div><span class="cat">STEM</span>
+      </div>
+      <div class="teacher">
+        <div class="ava">ЖӘ</div>
+        <div><span class="tl">Учитель дня</span><span class="tn">Жақия Әбілмансұр</span></div>
+      </div>
+    </article>
+  </main>
+
+  <button type="button" class="fab" id="fab-teachers">
+    <svg class="i" aria-hidden="true"><use href="#i-heart" /></svg>
+    <span id="fab-teachers-label"></span>
+  </button>
+
+  <div class="panel-overlay" id="panel-overlay" hidden>
+    <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+      <div class="panel-head">
+        <h2 id="panel-title"></h2>
+        <button type="button" class="icon-btn" id="panel-close" aria-label="Close">
+          <svg class="i" aria-hidden="true"><use href="#i-x" /></svg>
+        </button>
+      </div>
+      <div class="search-row panel-search">
+        <svg class="i" aria-hidden="true"><use href="#i-search" /></svg>
+        <input type="search" id="teacher-search" autocomplete="off" inputmode="search">
+      </div>
+      <ul class="teacher-list" id="teacher-list"></ul>
+    </div>
+  </div>
+
+  <div class="confirm-overlay" id="confirm-overlay" hidden>
+    <div class="confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="confirm-text">
+      <p id="confirm-text"></p>
+      <p class="confirm-hint" id="confirm-hint"></p>
+      <div class="confirm-actions">
+        <button type="button" class="confirm-btn confirm-cancel" id="confirm-cancel"></button>
+        <button type="button" class="confirm-btn confirm-yes" id="confirm-yes"></button>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    /* =====================================================================
+       ШПАРГАЛКА: ГДЕ ЧТО МЕНЯТЬ (сам код ниже трогать не нужно)
+       1. Время уроков 9–10 классов ........ const times  (ниже)
+       2. Время уроков 12 классов .......... const times12 (ниже)
+       3. Расписание (кабинеты, учителя) ... const scheduleData  («тут кароче рассписание»)
+       4. Новый предмет / его перевод ...... const dict
+       5. Заголовок сайта .................. translations.title  и  ui.eyebrow (жёлтая плашка сверху)
+       6. Концерт (время, место, текст) .... const CONCERT  и  const extra
+       7. Письмо для 12 классов ............ extra.letterText, extra.letterSign
+       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на counterapi.dev (COUNTER_NAMESPACE)
+       9. Цвета ............................ в самом верху файла, блок :root { ... }
+       Всегда сохраняйте кавычки " " и запятые в конце строк — без них сайт сломается.
+       ===================================================================== */
+    // UPDATED: School starts at 09:00, 45 minute lessons.
+    // ВРЕМЯ УРОКОВ 9–10 классов. Порядок: 1-й, 2-й, 3-й, 4-й урок. Формат "ЧЧ:ММ - ЧЧ:ММ".
+    // Если меняете время, то поменяйте и числа в getLiveLessonStatus() и SLOTS (там время в минутах от полуночи: 09:00 = 540).
+    const times = ["09:00 - 09:45", "09:55 - 10:40", "10:55 - 11:40", "11:55 - 12:40"];
+    // ВРЕМЯ УРОКОВ 12 классов (у них уроки по 35 минут, 5 уроков). Соответствующие числа: SLOTS12.
+    const times12 = ["09:00 - 09:35", "09:45 - 10:20", "10:35 - 11:10", "11:20 - 11:55", "12:05 - 12:40"];
+
+    // СЛОВАРЬ ПРЕДМЕТОВ. Слева — как предмет записан в расписании (subj), справа — перевод на 3 языка.
+    // Чтобы добавить предмет, скопируйте любую строку, поменяйте название и переводы.
+    // cat — категория: "STEM", "Тілдер", "Гуманитарлық", "Өнер", "Спорт" или "Жалпы".
+    // Trilingual dictionaries
+    const dict = {
+      "Алгебра": { ru: "Алгебра", kk: "Алгебра", en: "Algebra", cat: "STEM" },
+      "А/u": { ru: "Английский язык", kk: "Ағылшын тілі", en: "English", cat: "Тілдер" },
+      "Физика": { ru: "Физика", kk: "Физика", en: "Physics", cat: "STEM" },
+      "Геометрия": { ru: "Геометрия", kk: "Геометрия", en: "Geometry", cat: "STEM" },
+      "Әдебиет": { ru: "Литература", kk: "Әдебиет", en: "Literature", cat: "Гуманитарлық" },
+      "Химия": { ru: "Химия", kk: "Химия", en: "Chemistry", cat: "STEM" },
+      "Каз Тарих": { ru: "История Казахстана", kk: "Қазақстан тарихы", en: "History of Kazakhstan", cat: "Гуманитарлық" },
+      "Информатика": { ru: "Информатика", kk: "Информатика", en: "Informatics", cat: "STEM" },
+      "Стем": { ru: "STEM", kk: "STEM", en: "STEM", cat: "STEM" },
+      "Джт": { ru: "Всемирная история", kk: "ДЖТ", en: "World History", cat: "Гуманитарлық" },
+      "Биология": { ru: "Биология", kk: "Биология", en: "Biology", cat: "STEM" },
+      "Орыс тілі": { ru: "Русский язык", kk: "Орыс тілі", en: "Russian Language", cat: "Тілдер" },
+      "Бағдарламалау": { ru: "Программирование", kk: "Бағдарламалау", en: "Programming", cat: "STEM" },
+      "География": { ru: "География", kk: "География", en: "Geography", cat: "Гуманитарлық" },
+      "Көркем еңбек": { ru: "Художественный труд", kk: "Көркем еңбек", en: "Art & Craft", cat: "Өнер" },
+      "Математика": { ru: "Математика", kk: "Математика", en: "Mathematics", cat: "STEM" },
+      "Жаратылыстану": { ru: "Естествознание", kk: "Жаратылыстану", en: "Natural Science", cat: "STEM" },
+      "3Д модельдеу": { ru: "3D Моделирование", kk: "3D Модельдеу", en: "3D Modeling", cat: "STEM" },
+      "Қазақ тілі": { ru: "Казахский язык", kk: "Қазақ тілі", en: "Kazakh Language", cat: "Тілдер" },
+      "Музыка": { ru: "Музыка", kk: "Музыка", en: "Music", cat: "Өнер" },
+      "Д/ш": { ru: "Физкультура", kk: "Дене шынықтыру", en: "PE", cat: "Спорт" },
+      "Еңбек": { ru: "Труд", kk: "Еңбек", en: "Technology", cat: "Жалпы" },
+      "Караоке": { ru: "Караоке", kk: "Караоке", en: "Karaoke", cat: "Өнер" },
+      "JustDance": { ru: "Just Dance", kk: "Just Dance", en: "Just Dance", cat: "Өнер" },
+      "Робототехника": { ru: "Робототехника", kk: "Робототехника", en: "Robotics", cat: "STEM" }
+    };
+
+    const translations = {
+      title: { ru: "День самоуправления", kk: "Өзін-өзі басқару күні", en: "Self-Governance Day" },
+      selectClassLabel: { ru: "Выберите класс", kk: "Сыныпты таңдаңыз", en: "Select Class" },
+      teacherDay: { ru: "Учитель дня", kk: "Күн мұғалімі", en: "Teacher of the Day" },
+      cab: { ru: "каб.", kk: "каб.", en: "room" },
+      allClasses: { ru: "Все классы", kk: "Барлық сыныптар", en: "All Classes" }
+    };
+
+    // Текст, когда учитель не указан:
+    const noneTeacher = "Мұғалім көрсетілмеген";
+
+    // ===== РАСПИСАНИЕ =====
+    // Одна строка = один урок класса:
+    //   { time: times[0], class: "9 «А»", cab: "A17/A18", subj: "Информатика", sub: "Фамилия Имя, Фамилия Имя" },
+    //   time  — номер урока: times[0] — 1-й, times[1] — 2-й, times[2] — 3-й, times[3] — 4-й
+    //           (у 12 классов times12[0]...times12[4])
+    //   class — класс, скобки « » копируйте из соседних строк
+    //   cab   — кабинет (несколько: "A25/1, A30/1"; пусто: "")
+    //   subj  — предмет, ДОЛЖЕН быть в словаре dict выше (иначе покажется как написано)
+    //   sub   — учитель(я) в кавычках; если учитель неизвестен, пишите без кавычек: noneTeacher
+    // Чтобы поменять учителя или кабинет — правьте текст в кавычках cab / sub нужной строки.
+    const scheduleData = [
+      // 12 А
+      { time: times12[0], class: "12 «А»", cab: "", subj: "Д/ш", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times12[1], class: "12 «А»", cab: "", subj: "Д/ш", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times12[2], class: "12 «А»", cab: "", subj: "Еңбек", sub: noneTeacher },
+      { time: times12[3], class: "12 «А»", cab: "", subj: "Караоке", sub: "Нұрпейіс Арлан, Мамыт Аятолла" },
+      { time: times12[4], class: "12 «А»", cab: "", subj: "JustDance", sub: noneTeacher },
+
+      // 12 Ә
+      { time: times12[0], class: "12 «Ә»", cab: "", subj: "Караоке", sub: "Нұрпейіс Арлан, Мамыт Аятолла" },
+      { time: times12[1], class: "12 «Ә»", cab: "", subj: "JustDance", sub: "Дюсембина Аярим, Сапарбек Гүлбақыт" },
+      { time: times12[2], class: "12 «Ә»", cab: "", subj: "Д/ш", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times12[3], class: "12 «Ә»", cab: "", subj: "Д/ш", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times12[4], class: "12 «Ә»", cab: "", subj: "Еңбек", sub: "Маликов Али, Габдулин Саян" },
+
+      // 12 Б
+      { time: times12[0], class: "12 «Б»", cab: "", subj: "Еңбек", sub: noneTeacher },
+      { time: times12[1], class: "12 «Б»", cab: "", subj: "Караоке", sub: "Нұрпейіс Арлан, Мамыт Аятолла" },
+      { time: times12[2], class: "12 «Б»", cab: "", subj: "JustDance", sub: noneTeacher },
+      { time: times12[3], class: "12 «Б»", cab: "", subj: "Д/ш", sub: "Жетписбаев Данияр, Шаймұрат Ихсан" },
+      { time: times12[4], class: "12 «Б»", cab: "", subj: "Д/ш", sub: "Жетписбаев Данияр, Шаймұрат Ихсан" },
+
+      // 10 Ә
+      { time: times[0], class: "10 «Ә»", cab: "A29", subj: "Алгебра", sub: "Тулегенова Камила, Сансызбай Риза" },
+      { time: times[1], class: "10 «Ә»", cab: "C/3", subj: "А/u", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times[2], class: "10 «Ә»", cab: "A32", subj: "Физика", sub: "Фазыл Арғын, Серик Уарис" },
+      { time: times[3], class: "10 «Ә»", cab: "A30", subj: "Геометрия", sub: "Жақия Әбілмансұр" },
+
+      // 10 А
+      { time: times[0], class: "10 «А»", cab: "A32", subj: "Физика", sub: "Фазыл Арғын, Серик Уарис" },
+      { time: times[1], class: "10 «А»", cab: "A30", subj: "Алгебра", sub: "Тулегенова Камила, Сансызбай Риза" },
+      { time: times[2], class: "10 «А»", cab: "C/3", subj: "А/u", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times[3], class: "10 «А»", cab: "A36", subj: "Әдебиет", sub: "Бек Бейбарыс" },
+
+      // 10 Б
+      { time: times[0], class: "10 «Б»", cab: "A30", subj: "Алгебра", sub: "Нұрпейіс Арлан" },
+      { time: times[1], class: "10 «Б»", cab: "A12", subj: "Әдебиет", sub: "Бек Бейбарыс" },
+      { time: times[2], class: "10 «Б»", cab: "A37", subj: "Химия", sub: "Сагнаева Малика" },
+      { time: times[3], class: "10 «Б»", cab: "A19", subj: "Каз Тарих", sub: "Балгожин Алихан" },
+
+      // 9 А
+      { time: times[0], class: "9 «А»", cab: "A21", subj: "Алгебра", sub: "Жусубеков Арлан" },
+      { time: times[1], class: "9 «А»", cab: "A17/A18", subj: "Информатика", sub: "Серік Әділжан, Рахат Мұхаммед" },
+      { time: times[2], class: "9 «А»", cab: "A13", subj: "Әдебиет", sub: "Бек Бейбарыс" },
+      { time: times[3], class: "9 «А»", cab: "A17/A18", subj: "Стем", sub: "Нұрғали Мәди, Джанболатов Бейбарыс" },
+
+      // 9 Ә
+      { time: times[0], class: "9 «Ә»", cab: "A17/A18", subj: "Информатика", sub: "Серік Әділжан, Рахат Мұхаммед" },
+      { time: times[1], class: "9 «Ә»", cab: "A28", subj: "Алгебра", sub: "Нұрпейіс Арлан" },
+      { time: times[2], class: "9 «Ә»", cab: "A34", subj: "Джт", sub: "Жантемір Азамат" },
+      { time: times[3], class: "9 «Ә»", cab: "A14", subj: "Биология", sub: "Қайрат Ерасыл, Нұралы Асанәлі" },
+
+      // 9 Б
+      { time: times[0], class: "9 «Б»", cab: "A14", subj: "Джт", sub: "Жантемір Азамат" },
+      { time: times[1], class: "9 «Б»", cab: "A25/1, A30/1", subj: "А/u", sub: "Берікбол Айдана, Оспанбекова Даяна, Айтбаев Маулен" },
+      { time: times[2], class: "9 «Б»", cab: "A28", subj: "Алгебра", sub: "Тулегенова Камила, Сансызбай Риза" },
+      { time: times[3], class: "9 «Б»", cab: "A29/1, A35/1", subj: "Орыс тілі", sub: "Төлепберген Гаухар, Бектасова Мадина" },
+
+      // 9 В
+      { time: times[0], class: "9 «В»", cab: "C/3", subj: "А/u", sub: "Кипасов Ахат, Қасымбек Алихан" },
+      { time: times[1], class: "9 «В»", cab: "A31/2, A24", subj: "Стем", sub: "Нұрғали Мәди, Джанболатов Бейбарыс" },
+      { time: times[2], class: "9 «В»", cab: "A31/2, A24", subj: "Стем", sub: "Нұрғали Мәди, Джанболатов Бейбарыс" },
+      { time: times[3], class: "9 «В»", cab: "A29", subj: "Алгебра", sub: "Тулегенова Камила, Сансызбай Риза" },
+
+      // 8 А
+      { time: times[0], class: "8 «А»", cab: "A31", subj: "Физика", sub: "Ахмет Ерхан" },
+      { time: times[1], class: "8 «А»", cab: "A29", subj: "Геометрия", sub: "Жақия Әбілмансұр" },
+      { time: times[2], class: "8 «А»", cab: "A11", subj: "Әдебиет", sub: "Ахмет Еркежан" },
+      { time: times[3], class: "8 «А»", cab: "A31", subj: "Физика", sub: "Ахмет Ерхан" },
+
+      // 8 Ә
+      { time: times[0], class: "8 «Ә»", cab: "A19/A25", subj: "А/u", sub: "Жылқайдар Д., Айтбаев М." },
+      { time: times[1], class: "8 «Ә»", cab: "A34", subj: "Орыс тілі", sub: "Төлепберген Гаухар" },
+      { time: times[2], class: "8 «Ә»", cab: "A12", subj: "Әдебиет", sub: "Габдулин Саян" },
+      { time: times[3], class: "8 «Ә»", cab: "A21", subj: "Биология", sub: noneTeacher },
+
+      // 8 Б
+      { time: times[0], class: "8 «Б»", cab: "A34", subj: "Алгебра", sub: "Жақия Әбілмансұр" },
+      { time: times[1], class: "8 «Б»", cab: "A21", subj: "Биология", sub: noneTeacher },
+      { time: times[2], class: "8 «Б»", cab: "A19", subj: "Каз Тарих", sub: "Балгожин Алихан" },
+      { time: times[3], class: "8 «Б»", cab: "A35", subj: "География", sub: "Марат Менсұлу" },
+
+      // 8 В
+      { time: times[0], class: "8 «В»", cab: "A25", subj: "Биология", sub: noneTeacher },
+      { time: times[1], class: "8 «В»", cab: "A19", subj: "Каз Тарих", sub: "Балгожин Алихан" },
+      { time: times[2], class: "8 «В»", cab: "A35", subj: "Орыс тілі", sub: "Төлепберген Гаухар" },
+      { time: times[3], class: "8 «В»", cab: "A26", subj: "Бағдарламалау", sub: "Ержігіт М., Бекишев М." },
+
+      // 7 А
+      { time: times[0], class: "7 «А»", cab: "A25/A30", subj: "А/u", sub: "Дюсембина А., Сапарбек Г." },
+      { time: times[1], class: "7 «А»", cab: "A31", subj: "Физика", sub: "Ахмет Ерхан" },
+      { time: times[2], class: "7 «А»", cab: "A15/16", subj: "Көркем еңбек", sub: noneTeacher },
+      { time: times[3], class: "7 «А»", cab: "A11", subj: "Әдебиет", sub: "Ахмет Еркежан" },
+
+      // 7 Ә
+      { time: times[0], class: "7 «Ә»", cab: "A19", subj: "Каз Тарих", sub: "Балгожин Алихан" },
+      { time: times[1], class: "7 «Ә»", cab: "A13", subj: "Әдебиет", sub: "Ахмет Еркежан" },
+      { time: times[2], class: "7 «Ә»", cab: "A31", subj: "Физика", sub: "Ахмет Ерхан" },
+      { time: times[3], class: "7 «Ә»", cab: "A37", subj: "Химия", sub: noneTeacher },
+
+      // 7 Б
+      { time: times[0], class: "7 «Б»", cab: "A37", subj: "Химия", sub: noneTeacher },
+      { time: times[1], class: "7 «Б»", cab: "A33", subj: "Орыс тілі", sub: "Мамыт Аятолла" },
+      { time: times[2], class: "7 «Б»", cab: "A33", subj: "Орыс тілі", sub: "Мамыт Аятолла" },
+      { time: times[3], class: "7 «Б»", cab: "A25", subj: "А/u", sub: "Жантермір Азамат" },
+
+      // 6 А
+      { time: times[0], class: "6 «А»", cab: "A11", subj: "Әдебиет", sub: "Бек Бейбарыс" },
+      { time: times[1], class: "6 «А»", cab: "A14", subj: "Джт", sub: "Жантемір Азамат" },
+      { time: times[2], class: "6 «А»", cab: "A21", subj: "Жаратылыстану", sub: noneTeacher },
+      { time: times[3], class: "6 «А»", cab: "A33", subj: "Орыс тілі", sub: "Мамыт Аяттола" },
+
+      // 6 Ә
+      { time: times[0], class: "6 «Ә»", cab: "A15/16", subj: "Көркем еңбек", sub: noneTeacher },
+      { time: times[1], class: "6 «Ә»", cab: "A15/16", subj: "Көркем еңбек", sub: noneTeacher },
+      { time: times[2], class: "6 «Ә»", cab: "A29", subj: "Математика", sub: "Джанболатов Бекарыс" },
+      { time: times[3], class: "6 «Ә»", cab: "A25/A34", subj: "А/u", sub: "Дюсембина А., Сапарбек Г." },
+
+      // 6 Б
+      { time: times[0], class: "6 «Б»", cab: "A13", subj: "Математика", sub: "Джанболатов Бекарыс" },
+      { time: times[1], class: "6 «Б»", cab: "A26/27", subj: "3Д модельдеу", sub: "Ержігіт М., Бекишев М." },
+      { time: times[2], class: "6 «Б»", cab: "A14", subj: "Джт", sub: "Жантемір Азамат" },
+      { time: times[3], class: "6 «Б»", cab: "A13", subj: "Қазақ тілі", sub: "Габдулин Саян" },
+
+      // 5 А
+      { time: times[0], class: "5 «А»", cab: "A12", subj: "Қазақ тілі", sub: "Ахмет Еркежан" },
+      { time: times[1], class: "5 «А»", cab: "Акт зал", subj: "Музыка", sub: noneTeacher },
+      { time: times[2], class: "5 «А»", cab: "A25/A30", subj: "А/u", sub: "Жылқайдар Д., Айтбаев М." },
+      { time: times[3], class: "5 «А»", cab: "A28", subj: "Математика", sub: "Нұрпейіс Арлан" },
+
+      // 5 Ә
+      { time: times[0], class: "5 «Ә»", cab: "A33", subj: "Орыс тілі", sub: "Мамыт Аятолла" },
+      { time: times[1], class: "5 «Ә»", cab: "A36", subj: "Қазақ тілі", sub: "Габдулин Саян" },
+      { time: times[2], class: "5 «Ә»", cab: "A19/A25", subj: "А/u", sub: "Дюсембина А., Сапарбек Г." },
+      { time: times[3], class: "5 «Ә»", cab: "A22/23", subj: "Робототехника", sub: "Серік Әділжан, Рахат М." },
+
+      // 5 Б
+      { time: times[0], class: "5 «Б»", cab: "A36", subj: "Қазақ тілі", sub: "Габдулин Саян" },
+      { time: times[1], class: "5 «Б»", cab: "A33", subj: "Орыс тілі", sub: "Бектасова Мадина" },
+      { time: times[2], class: "5 «Б»", cab: "A28", subj: "Математика", sub: "Нұрпейіс Арлан" },
+      { time: times[3], class: "5 «Б»", cab: "A15/16", subj: "Көркем еңбек", sub: noneTeacher },
+
+      // 5 В
+      { time: times[0], class: "5 «В»", cab: "A28", subj: "Математика", sub: "Жаңаберген Тимур" },
+      { time: times[1], class: "5 «В»", cab: "A11", subj: "Қазақ тілі", sub: "Муканов Жанибек" },
+      { time: times[2], class: "5 «В»", cab: "A22/23", subj: "Робототехника", sub: "Серік Әділжан, Рахат М." },
+      { time: times[3], class: "5 «В»", cab: "A15/16", subj: "Көркем еңбек", sub: noneTeacher }
+    ];
+    // шел 10 час кода я устал помогите пж
+
+    function getLiveLessonStatus() {
+      const now = new Date();
+      const mins = now.getHours() * 60 + now.getMinutes();
+
+      // шпора что бы короче не париться с числами
+      // 1st: 9:00 - 9:45  (540 - 585)
+      // 2nd: 9:55 - 10:40 (595 - 640)
+      // 3rd: 10:55 - 11:40 (655 - 700)
+      // 4th: 11:55 - 12:40 (715 - 760)
+
+      if (mins >= 540 && mins <= 585) return { ru: "Идет 1-й урок", kk: "1-сабақ жүріп жатыр", en: "1st lesson is active" };
+      if (mins > 585 && mins < 595) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
+      if (mins >= 595 && mins <= 640) return { ru: "Идет 2-й урок", kk: "2-сабақ жүріп жатыр", en: "2nd lesson is active" };
+      if (mins > 640 && mins < 655) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
+      if (mins >= 655 && mins <= 700) return { ru: "Идет 3-й урок", kk: "3-сабақ жүріп жатыр", en: "3rd lesson is active" };
+      if (mins > 700 && mins < 715) return { ru: "Большая перемена", kk: "Үлкен үзіліс", en: "Long Break" };
+      if (mins >= 715 && mins <= 760) return { ru: "Идет 4-й урок", kk: "4-сабақ жүріп жатыр", en: "4th lesson is active" };
+
+      if (mins > 760 && mins < 810) return { ru: "Уроки завершены · концерт в 13:30", kk: "Сабақтар аяқталды · концерт 13:30-да", en: "Classes are over · concert at 13:30" };
+      if (mins >= 810 && mins <= 900) return { ru: "Идёт концерт 🎤", kk: "Концерт жүріп жатыр 🎤", en: "Concert is on 🎤" };
+      if (mins < 540) return { ru: "Уроки еще не начались", kk: "Сабақтар әлі басталған жоқ", en: "Classes haven't started yet" };
+      return { ru: "Уроки завершены", kk: "Сабақтар аяқталды", en: "Classes are over" };
+    }
+
+    function updateLiveStatus() {
+      const statusObj = getLiveLessonStatus();
+      document.getElementById('current-status-text').textContent = statusObj[currentLang];
+    }
+
+    function getInitials(name) {
+      if (name === noneTeacher) return "?";
+      return name.substring(0, 2).toUpperCase();
+    }
+
+    /* ---------- тут прям крутые скрипты которые делают жизнь проще ---------- */
+    const LANGS = ['kk', 'ru', 'en'];
+    const $ = id => document.getElementById(id);
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+    };
+
+    // ТЕКСТЫ ИНТЕРФЕЙСА на 3 языках (kk / ru / en). Правьте только то, что в кавычках.
+    const ui = {
+      eyebrow: { ru: "День Независимости", kk: "Тәуелсіздік күні", en: "Independence Day" },
+      now: { ru: "Сейчас", kk: "Қазір", en: "Now" },
+      toDark: { ru: "Тёмная тема", kk: "Қараңғы тема", en: "Dark theme" },
+      toLight: { ru: "Светлая тема", kk: "Жарық тема", en: "Light theme" },
+      searchPlaceholder: { ru: "Поиск: предмет, учитель, кабинет...", kk: "Іздеу: пән, мұғалім, кабинет...", en: "Search subject, teacher, room..." },
+      noResults: { ru: "Ничего не найдено", kk: "Ештеңе табылмады", en: "No results found" },
+      fabLabel: { ru: "Поддержать учителя", kk: "Мұғалімді қолдау", en: "Support a teacher" },
+      panelTitle: { ru: "Поддержать учителя", kk: "Мұғалімді қолдау", en: "Support a teacher" },
+      teacherSearchPlaceholder: { ru: "Найти учителя...", kk: "Мұғалімді табу...", en: "Find a teacher..." },
+      confirmQuestion: { ru: "Поддержать {name}?", kk: "{name} қолдайсыз ба?", en: "Support {name}?" },
+      confirmHint: { ru: "Можно поддержать каждого учителя один раз с этого устройства.", kk: "Осы құрылғыдан әр мұғалімді бір рет қана қолдауға болады.", en: "You can support each teacher once from this device." },
+      confirmYes: { ru: "Да, поддержать", kk: "Иә, қолдаймын", en: "Yes, support" },
+      confirmCancel: { ru: "Отмена", kk: "Бас тарту", en: "Cancel" },
+      likedMsg: { ru: "Спасибо, {name}! ❤️", kk: "Рахмет, {name}! ❤️", en: "Thank you, {name}! ❤️" },
+      alreadyLiked: { ru: "Вы уже поддержали", kk: "Сіз қолдап қойдыңыз", en: "Already supported" }
+    };
+    const catNames = {
+      "STEM": { ru: "STEM", kk: "STEM", en: "STEM" },
+      "Тілдер": { ru: "Языки", kk: "Тілдер", en: "Languages" },
+      "Гуманитарлық": { ru: "Гуманитарные", kk: "Гуманитарлық", en: "Humanities" },
+      "Өнер": { ru: "Искусство", kk: "Өнер", en: "Arts" },
+      "Спорт": { ru: "Спорт", kk: "Спорт", en: "Sports" },
+      "Жалпы": { ru: "Общее", kk: "Жалпы", en: "General" }
+    };
+
+
+    /* ---------- Концерт + письмо для 12 сыныптар ---------- */
+    // КОНЦЕРТ: time — что показывается на карточке; place — место;
+    // start/end — когда карточка светится как «Сейчас» (в минутах от полуночи: 13:30 = 13*60+30 = 810, 15:00 = 900)
+    const CONCERT = { time: "13:30", place: "Акт зал", start: 810, end: 900 }; // <- время/место концерта
+    const SLOTS12 = [[540, 575], [585, 620], [635, 670], [680, 715], [725, 760]];
+    function getSlot12() {
+      const d = new Date(), m = d.getHours() * 60 + d.getMinutes();
+      return SLOTS12.findIndex(s => m >= s[0] && m <= s[1]);
+    }
+    function concertNow() {
+      const d = new Date(), m = d.getHours() * 60 + d.getMinutes();
+      return m >= CONCERT.start && m <= CONCERT.end;
+    }
+    function slotKey() { return getSlot() + '/' + getSlot12() + '/' + concertNow(); }
+
+    // ТЕКСТЫ концерта и письма для 12 классов (kk / ru / en). В letterText каждая строка в кавычках — отдельный абзац.
+    const extra = {
+      concertTitle: { ru: "Праздничный концерт", kk: "Мерекелік концерт", en: "Festive Concert" },
+      concertCat: { ru: "Концерт", kk: "Концерт", en: "Concert" },
+      concertSub: { ru: "Приходите всем лицеем — будет ярко!", kk: "Бүкіл лицеймен келіңіздер — қызық болады!", en: "Join us — the whole lyceum is invited!" },
+      letterTitle: { ru: "Дорогие 12 классы!", kk: "Құрметті 12-сынып оқушылары!", en: "Dear 12th graders!" },
+      letterText: {
+        ru: ["Сегодня ваши уроки особенные: караоке, танцы и хорошее настроение — потому что вы этого заслужили.",
+             "Вы пришли в лицей детьми, а сегодня идёте по финишной прямой — уверенными, яркими и смелыми. Спасибо за вашу энергию, смех и каждую минуту, которую вы вложили в жизнь лицея.",
+             "Пусть впереди будут только сильные результаты, верные друзья и мечты, которые сбываются. Мы гордимся вами!"],
+        kk: ["Бүгін сіздердің сабақтарыңыз ерекше: караоке, би және көтеріңкі көңіл-күй — өйткені сіздер бұған лайықсыздар.",
+             "Сіздер лицейге бала болып келдіңіздер, ал бүгін финишке сенімді, жарқын әрі батыл болып келесіздер. Энергияларыңыз бен күлкілеріңіз үшін, лицей өміріне салған әрбір минуттарыңыз үшін рахмет.",
+             "Алдарыңызда тек жоғары нәтижелер, адал достар және орындалатын армандар болсын. Сіздермен мақтанамыз!"],
+        en: ["Today your lessons are special: karaoke, dancing and good vibes — because you've earned it.",
+             "You came to the lyceum as kids, and now you're on the home stretch — confident, bright and brave. Thank you for your energy, your laughter and every minute you've put into lyceum life.",
+             "May only great results, true friends and dreams that come true lie ahead. We are proud of you!"]
+      },
+      letterSign: { ru: "С теплом, команда Дня самоуправления", kk: "Ізгі тілекпен, Өзін-өзі басқару күні тобы", en: "Warmly, the Self-Governance Day team" }
+    };
+    function extrasHTML(q) {
+      if (q) return '';
+      const L = currentLang, nowC = concertNow();
+      let html = `<article class="card concert${nowC ? ' now' : ''}">
+      ${nowC ? `<span class="badge-now">${ui.now[L]}</span>` : ''}
+      <div class="row">
+        <div class="time"><span class="num">♪</span>${CONCERT.time}</div>
+        <div class="cab">${icon('door')}${CONCERT.place}</div>
+      </div>
+      <div><div class="subj">🎤 ${extra.concertTitle[L]}</div><span class="cat">${extra.concertCat[L]}</span></div>
+      <p class="concert-sub">${extra.concertSub[L]}</p>
+    </article>`;
+      if (currentClassFilter.indexOf('12 ') === 0) {
+        html += `<article class="letter"><div class="letter-flap" aria-hidden="true">💌</div><svg class="flora flora-tr" viewBox="0 0 120 120" aria-hidden="true"><use href="#leaf" x="20" y="80" width="38" height="22" transform="rotate(-35 20 80)"/><use href="#leaf" x="50" y="96" width="34" height="20" transform="rotate(-70 50 96)"/><use href="#lily" x="6" y="22" width="56" height="56"/><use href="#peony" x="44" y="8" width="72" height="72"/></svg><svg class="flora flora-bl" viewBox="0 0 110 110" aria-hidden="true"><use href="#leaf" x="58" y="30" width="34" height="20" transform="rotate(-30 58 30)"/><use href="#leaf" x="30" y="8" width="32" height="19" transform="rotate(-60 30 8)"/><use href="#peony" x="4" y="34" width="68" height="68"/><use href="#lily" x="52" y="56" width="52" height="52"/></svg>
+      <h3>${extra.letterTitle[L]}</h3>
+      ${extra.letterText[L].map(p => `<p>${p}</p>`).join('')}
+      <p class="sign">${extra.letterSign[L]}</p></article>`;
+      }
+      return html;
+    }
+
+    const classes = [...new Set(scheduleData.map(i => i.class))];
+    const savedLang = store.get('lang'), savedClass = store.get('cls');
+    let currentLang = LANGS.indexOf(savedLang) > -1 ? savedLang : 'ru';
+    let currentClassFilter = (savedClass === 'All' || classes.indexOf(savedClass) > -1) ? savedClass : '10 «Ә»';
+
+    // Same lesson windows as getLiveLessonStatus (minutes since midnight)
+    const SLOTS = [[540, 585], [595, 640], [655, 700], [715, 760]];
+    function getSlot() {
+      const d = new Date(), m = d.getHours() * 60 + d.getMinutes();
+      return SLOTS.findIndex(s => m >= s[0] && m <= s[1]);
+    }
+
+    const icon = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+
+    function syncTheme() {
+      const light = document.documentElement.getAttribute('data-theme') === 'light';
+      $('theme-color').setAttribute('content', light ? '#F3F6FB' : '#030F22');
+      const label = light ? ui.toDark[currentLang] : ui.toLight[currentLang];
+      $('theme-btn').setAttribute('aria-label', label);
+      $('theme-btn').title = label;
+    }
+
+    function generateFilters() {
+      let html = `<option value="All">${translations.allClasses[currentLang]}</option>`;
+      classes.forEach(c => {
+        html += `<option value="${c}"${c === currentClassFilter ? ' selected' : ''}>${c}</option>`;
+      });
+      $('class-select').innerHTML = html;
+      $('class-select').value = currentClassFilter;
+    }
+
+    function renderGrid() {
+      const slot = getSlot(), slot12 = getSlot12();
+      const q = $('search-input').value.trim().toLowerCase();
+      let rows;
+      if (q) {
+        rows = scheduleData.filter(item => {
+          const s = dict[item.subj] || { ru: item.subj, kk: item.subj, en: item.subj, cat: "Жалпы" };
+          const cat = (catNames[s.cat] || {})[currentLang] || s.cat;
+          const haystack = [s.ru, s.kk, s.en, cat, item.sub, item.cab, item.class].join(' ').toLowerCase();
+          return haystack.includes(q);
+        });
+      } else {
+        rows = currentClassFilter === 'All' ? scheduleData : scheduleData.filter(i => i.class === currentClassFilter);
+      }
+      if (rows.length === 0) {
+        $('grid-container').innerHTML = `<div class="no-results">${ui.noResults[currentLang]}</div>`;
+        return;
+      }
+      $('grid-container').innerHTML = rows.map(item => {
+        const s = dict[item.subj] || { ru: item.subj, kk: item.subj, en: item.subj, cat: "Жалпы" };
+        let n = times.indexOf(item.time); const is12 = n < 0; if (is12) n = times12.indexOf(item.time);
+        const cat = (catNames[s.cat] || {})[currentLang] || s.cat;
+        const now = n === (is12 ? slot12 : slot);
+        return `<article class="card${now ? ' now' : ''}">
+      ${now ? `<span class="badge-now">${ui.now[currentLang]}</span>` : ''}
+      <div class="row">
+        <div class="time"><span class="num">${n + 1}</span>${item.time}</div>
+        <div class="cab">${icon('door')}${item.cab ? item.cab + ' ' + translations.cab[currentLang] + ' • ' : ''}${item.class}</div>
+      </div>
+      <div><div class="subj">${s[currentLang]}</div><span class="cat">${cat}</span></div>
+      <div class="teacher">
+        <div class="ava">${getInitials(item.sub)}</div>
+        <div><span class="tl">${translations.teacherDay[currentLang]}</span><span class="tn">${item.sub}</span></div>
+      </div>
+    </article>`;
+      }).join('') + extrasHTML(q);
+    }
+
+    /* ---------- Счётчик «Поддержать учителя» (общий для всех, через сервис counterapi.dev) ----------
+       COUNTER_NAMESPACE — «папка» счётчиков. Хотите обнулить все лайки — поменяйте название (например "itbilim-2027"). */
+    const COUNTER_NAMESPACE = "itbilim-2026";
+    let thanksCounts = {};
+    let thanksOnline = true;
+    let thankedTeachers = new Set();
+    try { thankedTeachers = new Set(JSON.parse(store.get('thanked') || '[]')); } catch (e) {}
+
+    /* ---------- Full staff directory (from the school's staff-list document) ----------
+       Vacant positions ("Вакант") and entries struck through in the source document
+       are left out since they aren't current staff. */
+    // СПИСОК УЧИТЕЛЕЙ для кнопки «Поддержать учителя»: { name: "ФИО", role: "должность" },
+    const teacherDirectory = [
+      { name: "Бершимова Айгерим Касымбековна", role: "Директор, информатика пәні мұғалімі" },
+      { name: "Жартанова Акмарал Кайроллиновна", role: "ДТЖЖ орынбасары, қазақ тілі пәні мұғалімі" },
+      { name: "Аманкелди Айжан", role: "ДОЖ орынбасары, информатика пәні мұғалімі" },
+      { name: "Касымова Г.М.", role: "Зам ДОЖ" },
+      { name: "Кусаинова Меиргуль Касеновна", role: "ДҒӨЖЖ орынбасары, география пәні мұғалімі" },
+      { name: "Әбдікәрім Камила Жұмаханқызы", role: "ДТЖЖ орынбасары" },
+      { name: "Абуталипова Балжан Мерекеевна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Адий Кульзия", role: "Математика пәні мұғалімі" },
+      { name: "Адилева Сания Калихановна", role: "Тарих пәнінің мұғалімі" },
+      { name: "Алина Аружан Нурланкызы", role: "Информатика пәні мұғалімі" },
+      { name: "Аманжолова Наргиз Кайроллиновна", role: "Педагог-ұйымдастырушы" },
+      { name: "Амантаева Гульжихан Набиевна", role: "Педагог-психолог" },
+      { name: "Амиржанова Шуга Кенжебековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Амиржанова Гульдана Сабиржановна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Асылбекова Индира Канатовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Аканова Гулжаз Жауынбайкызы", role: "Математика пәнінің мұғалімі" },
+      { name: "Ауенова Гульмира Зинулловна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Ахметжанова Инкар Рамазановна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Ахметов Алмат Хайруллович", role: "Информатика пәнінің мұғалімі" },
+      { name: "Ахметова Гульзат Алтынбековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Ашкен Раухат Рашидұлы", role: "Информатика пәнінің мұғалімі" },
+      { name: "Абдуллаева Эльмира Жумадуллакызы", role: "Педагог ұйымдастырушы" },
+      { name: "Байдильденова Куляш Муслимовна", role: "Көркем еңбек пәнінің мұғалімі" },
+      { name: "Байдуллина Айгуль Мауленовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Баймұхан Сәлия Ғалымбекқызы", role: "Ағылшын тілі мұғалімі" },
+      { name: "Балпанова Гулмира Оразалиновна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Батколла Ұлжан Әскеркызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Бейсембаев Данияр Акбарович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Бекболатова Лаура Даулетовна", role: "Физика пәнінің мұғалімі" },
+      { name: "Бекмаганбетов Бекет Кумирсерикович", role: "Алғашқы әскери пәнінің мұғалімі" },
+      { name: "Бектасова Амина Ергалиевна", role: "Математика пәнінің мұғалімі" },
+      { name: "Бекхожин Медет Асыгатович", role: "Музыка пәнінің мұғалімі" },
+      { name: "Болатова Милана Женисовна", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Бугабай Арман", role: "Тарих пәнінің мұғалімі" },
+      { name: "Букенеева Айгерим Каиржановна", role: "Биология пәні мұғалімі" },
+      { name: "Бірлес Ақбота Ақылбекқызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Даулетова Гульназ Койшебаевна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Демесинов Сагындык Конаевич", role: "Информатика пәнінің мұғалімі" },
+      { name: "Досмуханова Жамиля Ахметханкызы", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Еркенова Анар Ризабековна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Естанов Марат Кабешович", role: "Көркем еңбек пәнінің мұғалімі" },
+      { name: "Жаксылык Аманбол Ерболулы", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Жанатаева Зарина Габитовна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Жиенбаева Маркен Капаровна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Ибраева Гулнар", role: "Бастауыш сынып мұғалімі" },
+      { name: "Ибраева Жанагул Амангельдиевна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Иврай Нургуль", role: "Тарих пәні мұғалімі" },
+      { name: "Кабиева Карлыгаш Амиржановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Канафина Акбота Бахытовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Канафина Дильназ Кайсаровна", role: "Педагог ұйымдастырушы" },
+      { name: "Касеинова Алия Зейнелгабиденовна", role: "Әлеуметтік педагог" },
+      { name: "Кенжеева Гулжаухар Жаксылыковна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Кожантаева Айдана Досболатовна", role: "Педагог-ұйымдастырушы" },
+      { name: "Койбагарова Айжан Есенгельдиновна", role: "Педагог ұйымдастырушы" },
+      { name: "Кошанов Серик Сулейменович", role: "Биология пәні мұғалімі" },
+      { name: "Кульбаев Марат Жусупович", role: "Информатика пәні мұғалімі" },
+      { name: "Қасымбек Маржан Ерболаткызы", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Малгаждарова Раушан Сырымбетовна", role: "География пәнінің мұғалімі" },
+      { name: "Мустафина Динара Сайрановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Мұрат Жандос Аскерұлы", role: "Информатика пәнінің мұғалімі" },
+      { name: "Мұсабек Асылжан Балтабекқызы", role: "Ағылшын тілі мұғалімі" },
+      { name: "Напухан Аягуль", role: "Математика пәнінің мұғалімі" },
+      { name: "Нурболат Назерке", role: "Ағылшын тілі мұғалімі" },
+      { name: "Орынбаева Шайза Ерсайынкызы", role: "Бастауыш сынып мұғалімі" },
+      { name: "Саденова Айнагуль Зарлыковна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Садуева Шынар Женисовна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Сактаганова Нургул Николаевна", role: "Қазақ тілі мен әдебиеті мұғалімі" },
+      { name: "Салимжан Әсемгүл Қалымтайкызы", role: "Педагог-ұйымдастырушы" },
+      { name: "Саяхат Мейрамгуль", role: "Бастауыш сынып мұғалімі" },
+      { name: "Сапарбекова Гулбахыт Бектаскызы", role: "Педагог ұйымдастырушы" },
+      { name: "Сарсенбаева Жанерке Айтбековна", role: "Педагог ұйымдастырушы" },
+      { name: "Талгатұлы Нияз", role: "Информатика пәнінің мұғалімі" },
+      { name: "Тобулбаева Аягоз Жанызаккызы", role: "Ағылшын пәні мұғалімі" },
+      { name: "Тлеубергенов Ержан Урунбасарович", role: "Информатика пәнінің мұғалімі" },
+      { name: "Толегенов Елдос Жомартович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Тюлешева Анар Ибраевна", role: "Құқық негіздері пәні мұғалімі" },
+      { name: "Узакбаев Бактияр Серикович", role: "Дене шынықтыру пәнінің мұғалімі" },
+      { name: "Шайзада Байболат", role: "Физика пәнінің мұғалімі" },
+      { name: "Шапкенова Марал Сериковна", role: "Химия пәнінің мұғалімі" },
+      { name: "Шаяхметова Рымжан Мураткеевна", role: "Орыс тілі мен әдебиеті мұғалімі" },
+      { name: "Шегенева Бакыт Болатовна", role: "Бастауыш сынып мұғалімі" },
+      { name: "Хамит Динара Коблановна", role: "Ағылшын тілі мұғалімі" },
+      { name: "Бейсенова Слушаш Мейрамбековна", role: "Информатика пәнінің мұғалімі" },
+      { name: "Дюсекеева Айжан Темиргалиевна", role: "Логопед совместитель" },
+      { name: "Кульчукова Сайран Кайратовна", role: "Домбра үйірмесінің жетекшісі" }
+    ];
+
+    function escapeAttr(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    }
+
+    function teacherRow(name, role) {
+      const thanked = thankedTeachers.has(name);
+      const count = thanksCounts[name] || 0;
+      return `<li class="teacher-row">
+        <div class="ava">${getInitials(name)}</div>
+        <div class="tr-info"><span class="tr-name">${name}</span><span class="tr-role">${role}</span></div>
+        <button type="button" class="thanks-btn${thanked ? ' thanked' : ''}" data-teacher="${escapeAttr(name)}"${thanked ? ` title="${ui.alreadyLiked[currentLang]}"` : ''}>
+          ${icon('heart')}<span class="thanks-count">${count}</span>
+        </button>
+      </li>`;
+    }
+
+    function renderTeacherList() {
+      const q = $('teacher-search').value.trim().toLowerCase();
+      const rows = q
+        ? teacherDirectory.filter(t => (t.name + ' ' + t.role).toLowerCase().includes(q))
+        : teacherDirectory;
+      $('teacher-list').innerHTML = rows.length
+        ? rows.map(t => teacherRow(t.name, t.role)).join('')
+        : `<li class="no-results">${ui.noResults[currentLang]}</li>`;
+    }
+
+    function openTeacherPanel() {
+      $('panel-overlay').hidden = false;
+      document.body.style.overflow = 'hidden';
+      renderTeacherList();
+      $('teacher-search').focus({ preventScroll: true });
+    }
+
+    function closeTeacherPanel() {
+      $('panel-overlay').hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    let pendingLike = null;
+
+    function openConfirm(teacher, btn) {
+      pendingLike = { teacher, btn };
+      $('confirm-text').textContent = ui.confirmQuestion[currentLang].replace('{name}', teacher);
+      $('confirm-hint').textContent = ui.confirmHint[currentLang];
+      $('confirm-yes').textContent = ui.confirmYes[currentLang];
+      $('confirm-cancel').textContent = ui.confirmCancel[currentLang];
+      $('confirm-overlay').hidden = false;
+    }
+
+    function closeConfirm() {
+      $('confirm-overlay').hidden = true;
+      pendingLike = null;
+    }
+
+    function syncThanksUI() {
+      document.querySelectorAll('.thanks-btn').forEach(btn => {
+        const t = btn.dataset.teacher;
+        btn.querySelector('.thanks-count').textContent = thanksCounts[t] || 0;
+        btn.classList.toggle('thanked', thankedTeachers.has(t));
+      });
+    }
+
+    // Ключ счётчика = имя учителя маленькими буквами
+    function counterKey(name) { return encodeURIComponent(name.trim().toLowerCase()); }
+
+    async function loadThanksCounts() {
+      try {
+        thanksOnline = true;
+        await Promise.all(
+          teacherDirectory.map(async (t) => {
+            try {
+              const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${counterKey(t.name)}/`);
+              if (res.ok) {
+                const data = await res.json();
+                thanksCounts[t.name] = data.count || 0;
+              }
+            } catch (e) {}
+          })
+        );
+      } catch (e) {
+        thanksOnline = false;
+      }
+      syncThanksUI();
+    }
+
+    async function sayThanks(teacher, btn) {
+      if (thankedTeachers.has(teacher)) return;
+      thankedTeachers.add(teacher);
+      store.set('thanked', JSON.stringify([...thankedTeachers]));
+
+      thanksCounts[teacher] = (thanksCounts[teacher] || 0) + 1;
+      syncThanksUI();
+
+      btn.classList.add('thanks-pop');
+      setTimeout(() => btn.classList.remove('thanks-pop'), 350);
+
+      try {
+        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${counterKey(teacher)}/up`);
+        if (res.ok) {
+          const data = await res.json();
+          thanksCounts[teacher] = data.count;
+          syncThanksUI();
+        }
+      } catch (e) {
+        console.error("Ошибка сети:", e);
+      }
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      store.set('lang', lang);
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+      $('eyebrow').textContent = ui.eyebrow[lang];
+      $('page-title').textContent = translations.title[lang];
+      $('class-select-label').textContent = translations.selectClassLabel[lang];
+      $('search-input').placeholder = ui.searchPlaceholder[lang];
+      $('fab-teachers-label').textContent = ui.fabLabel[lang];
+      $('panel-title').textContent = ui.panelTitle[lang];
+      $('teacher-search').placeholder = ui.teacherSearchPlaceholder[lang];
+      if (!$('panel-overlay').hidden) renderTeacherList();
+      syncTheme();
+      updateLiveStatus();
+      generateFilters();
+      renderGrid();
+    }
+
+    function launchConfetti(customMsg) {
+      const colors = ['#0097B5', '#FEC50C', '#EEF3FA'];
+      const layer = document.createElement('div');
+      layer.className = 'confetti-layer';
+      for (let i = 0; i < 90; i++) {
+        const p = document.createElement('span');
+        p.className = 'confetti-piece';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.background = colors[i % colors.length];
+        p.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+        p.style.animationDuration = (2.2 + Math.random() * 1.6) + 's';
+        p.style.animationDelay = (Math.random() * 0.4) + 's';
+        layer.appendChild(p);
+      }
+      document.body.appendChild(layer);
+
+      const msgs = {
+        ru: "Тәуелсіздік құтты болсын! 🇰🇿",
+        kk: "Тәуелсіздік құтты болсын! 🇰🇿",
+        en: "Happy Independence Day! 🇰🇿"
+      };
+      const msg = document.createElement('div');
+      msg.className = 'confetti-msg';
+      msg.textContent = customMsg || msgs[currentLang] || msgs.en;
+      document.body.appendChild(msg);
+      requestAnimationFrame(() => msg.classList.add('show'));
+
+      setTimeout(() => msg.classList.remove('show'), 2600);
+      setTimeout(() => { layer.remove(); msg.remove(); }, 4200);
+    }
+
+    function initApp() {
+      document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+      $('class-select').addEventListener('change', e => {
+        currentClassFilter = e.target.value;
+        store.set('cls', currentClassFilter);
+        renderGrid();
+      });
+      $('search-input').addEventListener('input', renderGrid);
+      loadThanksCounts();
+
+      // Teacher appreciation panel
+      $('fab-teachers').addEventListener('click', openTeacherPanel);
+      $('panel-close').addEventListener('click', closeTeacherPanel);
+      $('panel-overlay').addEventListener('click', e => { if (e.target === $('panel-overlay')) closeTeacherPanel(); });
+      $('teacher-search').addEventListener('input', renderTeacherList);
+      $('teacher-list').addEventListener('click', e => {
+        const btn = e.target.closest('.thanks-btn');
+        if (!btn || btn.classList.contains('thanked')) return;
+        openConfirm(btn.dataset.teacher, btn);
+      });
+      $('confirm-cancel').addEventListener('click', closeConfirm);
+      $('confirm-overlay').addEventListener('click', e => { if (e.target === $('confirm-overlay')) closeConfirm(); });
+      $('confirm-yes').addEventListener('click', () => {
+        if (!pendingLike) return;
+        const { teacher, btn } = pendingLike;
+        closeConfirm();
+        sayThanks(teacher, btn);
+        launchConfetti(ui.likedMsg[currentLang].replace('{name}', teacher));
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key !== 'Escape') return;
+        if (!$('confirm-overlay').hidden) closeConfirm();
+        else if (!$('panel-overlay').hidden) closeTeacherPanel();
+      });
+
+      // Easter egg: tap the logo 5 times quickly for a flag-colored confetti burst
+      let brandTaps = [];
+      document.querySelector('.brand').addEventListener('click', () => {
+        const now = Date.now();
+        brandTaps = brandTaps.filter(t => now - t < 2500);
+        brandTaps.push(now);
+        if (brandTaps.length >= 5) {
+          brandTaps = [];
+          launchConfetti();
+        }
+      });
+      $('theme-btn').addEventListener('click', () => {
+        const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        store.set('theme', next);
+        syncTheme();
+      });
+      setLang(currentLang);
+
+      let last = slotKey();
+      setInterval(() => {
+        updateLiveStatus();
+        const s = slotKey();
+        if (s !== last) { last = s; renderGrid(); }
+      }, 30000);
+      // iOS pauses timers in the background, so refresh when the tab comes back
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) { last = slotKey(); updateLiveStatus(); renderGrid(); }
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</body>
+
+</html>
