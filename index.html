@@ -1021,7 +1021,7 @@
     // UPDATED: School starts at 09:00, 45 minute lessons.
     // ВРЕМЯ УРОКОВ 9–10 классов. Порядок: 1-й, 2-й, 3-й, 4-й урок. Формат "ЧЧ:ММ - ЧЧ:ММ".
     // Если меняете время, то поменяйте и числа в getLiveLessonStatus() и SLOTS (там время в минутах от полуночи: 09:00 = 540).
-    const times = ["09:00 - 09:45", "09:55 - 10:40", "10:55 - 11:40", "11:55 - 12:40"];
+    const times = [""09:00 - 09:35", "09:45 - 10:20", "10:35 - 11:10", "11:20 - 11:55", "12:05 - 12:40"];
     // ВРЕМЯ УРОКОВ 12 классов (у них уроки по 35 минут, 5 уроков). Соответствующие числа: SLOTS12.
     const times12 = ["09:00 - 09:35", "09:45 - 10:20", "10:35 - 11:10", "11:20 - 11:55", "12:05 - 12:40"];
 
@@ -1055,8 +1055,8 @@
       "Караоке": { ru: "Караоке", kk: "Караоке", en: "Karaoke", cat: "Өнер" },
       "Жәсөспірім тілі": { ru: "Язык молодежи", kk: "Жәсөспірім тілі", en: "Teenager Launguage", cat: "Тілдер" },
       "Робототехника": { ru: "Робототехника", kk: "Робототехника", en: "Robotics", cat: "STEM" },
-      "Ағылшын тілі": { ru: "Английский язык", kk: "Ағылшын тілі", en: "English", cat: "Тілдер" }
-      "Жаратылыстану": { ru: "Естествознание", kk: "Жаратылыстану", en: "Natural Sience", cat: "STEM" }
+      "Ағылшын тілі": { ru: "Английский язык", kk: "Ағылшын тілі", en: "English", cat: "Тілдер" },
+      "Жаратылыстану": { ru: "Естествознание", kk: "Жаратылыстану", en: "Natural Sience", cat: "STEM" },
     };
 
     const translations = {
@@ -1239,20 +1239,23 @@
       const mins = now.getHours() * 60 + now.getMinutes();
 
       // шпора что бы короче не париться с числами
-      // 1st: 9:00 - 9:45  (540 - 585)
-      // 2nd: 9:55 - 10:40 (595 - 640)
-      // 3rd: 10:55 - 11:40 (655 - 700)
-      // 4th: 11:55 - 12:40 (715 - 760)
+      // 1st: 9:00 - 9:35 (540 - 575)
+      // 2nd: 9:45 - 10:20 (585 - 620)
+      // 3rd: 10:35 - 11:10 (635 - 670)
+      // 4th: 11:25 - 12:00 (685 - 720)
+      // 5th: 12:15 - 12:50 (735 - 770)
 
-      if (mins >= 540 && mins <= 585) return { ru: "Идет 1-й урок", kk: "1-сабақ жүріп жатыр", en: "1st lesson is active" };
-      if (mins > 585 && mins < 595) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
-      if (mins >= 595 && mins <= 640) return { ru: "Идет 2-й урок", kk: "2-сабақ жүріп жатыр", en: "2nd lesson is active" };
-      if (mins > 640 && mins < 655) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
-      if (mins >= 655 && mins <= 700) return { ru: "Идет 3-й урок", kk: "3-сабақ жүріп жатыр", en: "3rd lesson is active" };
-      if (mins > 700 && mins < 715) return { ru: "Большая перемена", kk: "Үлкен үзіліс", en: "Long Break" };
-      if (mins >= 715 && mins <= 760) return { ru: "Идет 4-й урок", kk: "4-сабақ жүріп жатыр", en: "4th lesson is active" };
+      if (mins >= 540 && mins <= 575) return { ru: "Идет 1-й урок", kk: "1-сабақ жүріп жатыр", en: "1st lesson is active" };
+      if (mins > 575 && mins < 585) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
+      if (mins >= 585 && mins <= 620) return { ru: "Идет 2-й урок", kk: "2-сабақ жүріп жатыр", en: "2nd lesson is active" };
+      if (mins > 620 && mins < 635) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
+      if (mins >= 635 && mins <= 670) return { ru: "Идет 3-й урок", kk: "3-сабақ жүріп жатыр", en: "3rd lesson is active" };
+      if (mins > 670 && mins < 685) return { ru: "Большая перемена", kk: "Үлкен үзіліс", en: "Long Break" };
+      if (mins >= 685 && mins <= 720) return { ru: "Идет 4-й урок", kk: "4-сабақ жүріп жатыр", en: "4th lesson is active" };
+      if (mins >= 720 && mins <= 725) return { ru: "Перемена", kk: "Үзіліс", en: "Break" };
+      if (mins >= 725 && mins <= 760) return { ru: "Идет 5-й урок", kk: "5-сабақ жүріп жатыр", en: "5th lesson is active" };
 
-      if (mins > 760 && mins < 810) return { ru: "Уроки завершены · концерт в 13:30", kk: "Сабақтар аяқталды · концерт 13:30-да", en: "Classes are over · concert at 13:30" };
+      if (mins > 760 && mins < 810) return { ru: "Уроки завершены · концерт в 14:00", kk: "Сабақтар аяқталды · концерт 14:00-да", en: "Classes are over · concert at 14:00" };
       if (mins >= 810 && mins <= 900) return { ru: "Идёт концерт 🎤", kk: "Концерт жүріп жатыр 🎤", en: "Concert is on 🎤" };
       if (mins < 540) return { ru: "Уроки еще не начались", kk: "Сабақтар әлі басталған жоқ", en: "Classes haven't started yet" };
       return { ru: "Уроки завершены", kk: "Сабақтар аяқталды", en: "Classes are over" };
@@ -1332,8 +1335,8 @@
         kk: ["Бүгін сіздердің сабақтарыңыз ерекше: караоке, би және көтеріңкі көңіл-күй өйткені сіздер бұған лайықсыздар.",
              "Сіздер лицейге бала болып келдіңіздер, ал бүгін финишке сенімді, жарқын әрі батыл болып келесіздер. Энергияларыңыз бен күлкілеріңіз үшін, лицей өміріне салған әрбір минуттарыңыз үшін рахмет.",
              "Алдарыңызда тек жоғары нәтижелер, адал достар және орындалатын армандар болсын. Сіздермен мақтанамыз!"],
-        en: ["Today your lessons are special: karaoke, dancing and good vibes  because you've earned it.",
-             "You came to the lyceum as kids, and now you're on the home stretch  confident, bright and brave. Thank you for your energy, your laughter and every minute you've put into lyceum life.",
+        en: ["Today your lessons are special: karaoke, dancing and good vibes, because you've earned it.",
+             "You came to the lyceum as kids, and now you're on the home stretch and confident, bright and brave. Thank you for your energy, your laughter and every minute you've put into lyceum life.",
              "May only great results, true friends and dreams that come true lie ahead. We are proud of you!"]
       },
       letterSign: { ru: "С теплом, команда Дня самоуправления", kk: "Ізгі тілекпен, Өзін-өзі басқару күні тобы", en: "Warmly, the Self-Governance Day team" }
