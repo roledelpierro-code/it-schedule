@@ -1014,7 +1014,7 @@
        5. Заголовок сайта .................. translations.title  и  ui.eyebrow (жёлтая плашка сверху)
        6. Концерт (время, место, текст) .... const CONCERT  и  const extra
        7. Письмо для 12 классов ............ extra.letterText, extra.letterSign
-       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на counterapi.dev (COUNTER_NAMESPACE)
+       8. Список учителей (кнопка «Поддержать») ... const teacherDirectory; лайки хранятся на counterapi.dev v2 (COUNTER_NAMESPACE)
        9. Цвета ............................ в самом верху файла, блок :root { ... }
        Всегда сохраняйте кавычки " " и запятые в конце строк — без них сайт сломается.
        ===================================================================== */
@@ -1422,7 +1422,7 @@
       }).join('') + extrasHTML(q);
     }
 
-    /* ---------- Счётчик «Поддержать учителя» (общий для всех, через сервис counterapi.dev) ----------
+    /* ---------- Счётчик «Поддержать учителя» (общий для всех, через сервис counterapi.dev v2) ----------
        COUNTER_NAMESPACE — «папка» счётчиков. Хотите обнулить все лайки — поменяйте название (например "itbilim-2027"). */
     const COUNTER_NAMESPACE = "itbilim-2026";
     let thanksCounts = {};
@@ -1593,10 +1593,10 @@
         await Promise.all(
           teacherDirectory.map(async (t) => {
             try {
-              const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${counterKey(t.name)}/`);
+              const res = await fetch(`https://api.counterapi.dev/v2/${COUNTER_NAMESPACE}/${counterKey(t.name)}/`);
               if (res.ok) {
                 const data = await res.json();
-                thanksCounts[t.name] = data.count || 0;
+                thanksCounts[t.name] = data.value ?? data.count ?? 0;
               }
             } catch (e) {}
           })
@@ -1619,10 +1619,10 @@
       setTimeout(() => btn.classList.remove('thanks-pop'), 350);
 
       try {
-        const res = await fetch(`https://api.counterapi.dev/v1/${COUNTER_NAMESPACE}/${counterKey(teacher)}/up`);
+        const res = await fetch(`https://api.counterapi.dev/v2/${COUNTER_NAMESPACE}/${counterKey(teacher)}/up`);
         if (res.ok) {
           const data = await res.json();
-          thanksCounts[teacher] = data.count;
+          thanksCounts[teacher] = data.value ?? data.count ?? 0;
           syncThanksUI();
         }
       } catch (e) {
